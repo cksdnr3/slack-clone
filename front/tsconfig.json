@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    /* Basic Option */
+    "jsx": "react",
+    "module": "ESNext",
+    "target": "ES5",
+
+    /* Strict Type-Checking Options */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noImplicitThis": true,
+
+    /* Module Resolution Options */
+    "moduleResolution": "Node",
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "paths": {
+      "@hooks/*": ["src/hooks/*"],
+      "@components/*": ["src/components/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@pages/*": ["src/pages/*"],
+      "@utils/*": ["src/utils/*"],
+      "@typings/*": ["src/typings/*"]
+    },
+
+    "sourceMap": true,
+    "lib": ["ES2020", "DOM"],
+    "plugins": [{ "name": "typescript-tslint-plugin" }]
+  },
+  "exclude": ["**/*.test.*", "**/*.spec.*", "node_modules", "dist", "public"]
+}
