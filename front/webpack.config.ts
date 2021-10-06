@@ -28,19 +28,7 @@ const config: webpack.Configuration = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              env: {
-                development: {
-                  plugins: [require.resolve('react-refresh/babel')],
-                },
-              },
-            },
-          },
-          'ts-loader',
-        ],
+        use: ['babel-loader', 'ts-loader'],
         exclude: path.join(__dirname, 'node_modules'),
       },
       {
@@ -67,6 +55,12 @@ const config: webpack.Configuration = {
     devMiddleware: { publicPath: '/dist' },
     static: { directory: path.resolve(__dirname, 'src') },
     liveReload: false,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3095',
+        changeOrigin: true,
+      },
+    },
   },
 };
 

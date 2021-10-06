@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
-    /* Basic Option */
     "jsx": "react",
     "module": "ESNext",
     "target": "ES5",
 
-    /* Strict Type-Checking Options */
     "strict": true,
     "noImplicitAny": true,
-    "strictNullChecks": true,
-    "noImplicitThis": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "strictFunctionTypes": true,
 
-    /* Module Resolution Options */
     "moduleResolution": "Node",
     "baseUrl": ".",
     "esModuleInterop": true,
@@ -25,8 +26,7 @@
     },
 
     "sourceMap": true,
-    "lib": ["ES2020", "DOM"],
-    "plugins": [{ "name": "typescript-tslint-plugin" }]
+    "lib": ["ES2020", "DOM"]
   },
   "exclude": ["**/*.test.*", "**/*.spec.*", "node_modules", "dist", "public"]
 }
