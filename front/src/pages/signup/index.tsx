@@ -14,7 +14,7 @@ type SignupReuqest = {
 };
 
 const SignUp = () => {
-  // const { data, error } = useSWR('/api/users');
+  const { data, error } = useSWR('/api/users');
 
   const [email, onChangeEmail] = useInput('');
   const [nickname, onChangeNickname] = useInput('');
