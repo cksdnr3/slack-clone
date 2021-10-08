@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "jsx": "react",
+    "jsx": "react-jsx",
     "module": "ESNext",
     "target": "ES5",
 
@@ -13,6 +13,8 @@
     "noFallthroughCasesInSwitch": true,
     "strictFunctionTypes": true,
 
+    "jsxImportSource": "@emotion/react",
+
     "moduleResolution": "Node",
     "baseUrl": ".",
     "esModuleInterop": true,
@@ -22,7 +24,8 @@
       "@layouts/*": ["src/layouts/*"],
       "@pages/*": ["src/pages/*"],
       "@utils/*": ["src/utils/*"],
-      "@typings/*": ["src/typings/*"]
+      "@typings/*": ["src/typings/*"],
+      "@constants/*": ["src/constants/*"]
     },
 
     "sourceMap": true,

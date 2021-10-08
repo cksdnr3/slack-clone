@@ -19,6 +19,7 @@ const config: webpack.Configuration = {
       '@pages': path.resolve(__dirname, 'src/pages'),
       '@utils': path.resolve(__dirname, 'src/utils'),
       '@typings': path.resolve(__dirname, 'src/typings'),
+      '@constants': path.resolve(__dirname, 'src/constants'),
     },
   },
   entry: {
@@ -55,12 +56,12 @@ const config: webpack.Configuration = {
     devMiddleware: { publicPath: '/dist' },
     static: { directory: path.resolve(__dirname, 'src') },
     liveReload: false,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3095',
-        changeOrigin: true,
-      },
-    },
+    // proxy: {
+    //   '/api': {
+    //     target: 'http://localhost:3095',
+    //     changeOrinpmgin: true,
+    //   },
+    // },
   },
 };
 

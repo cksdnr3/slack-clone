@@ -1,10 +1,8 @@
-// import useInput from '@hooks/useInput';
-// import fetcher from '@utils/fetcher';
 import React, { useCallback, useState } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import useSWR from 'swr';
-import { Success, Form, Error, Label, Input, LinkContainer, Button, Header } from './styles';
-import { Link, Redirect } from 'react-router-dom';
+import { Success, Form, Error, Label, Input, LinkContainer, Button, Header } from '@pages/signup/styles';
+import { Link } from 'react-router-dom';
 import useInput from '@hooks/useInput';
 
 type SignupReuqest = {
@@ -14,7 +12,7 @@ type SignupReuqest = {
 };
 
 const SignUp = () => {
-  const { data, error } = useSWR('/api/users');
+  // const { data, error } = useSWR('/api/users');
 
   const [email, onChangeEmail] = useInput('');
   const [nickname, onChangeNickname] = useInput('');
@@ -49,7 +47,7 @@ const SignUp = () => {
         setSignUpError('');
         setSignUpSuccess(false);
         axios
-          .post('/api/users', { email, nickname, password })
+          .post('http://localhost:3095/api/users', { email, nickname, password })
           .then((res: AxiosResponse<SignupReuqest>) => {
             console.log(res.data);
             setSignUpSuccess(true);
