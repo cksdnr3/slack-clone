@@ -1,18 +1,24 @@
 import Loading from '@components/loading';
 import { apiKeys } from '@constants/apiKeys';
 import useInput from '@hooks/useInput';
-import { Success, Form, Error, Label, Input, LinkContainer, Button, Header } from '@pages/signup/styles';
+import { Success, Form, Error, Label, Input, LinkContainer, Button, Header } from '@pages/Signup/styles';
 import fetcher from '@utils/fetcher';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import React, { useCallback, useState, VFC } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import useSWR, { useSWRConfig } from 'swr';
 
 interface LoginProps {}
 
+export interface User {
+  id: number;
+  nickname: string;
+  email: string;
+}
+
 const LogIn: VFC<LoginProps> = () => {
   const { mutate } = useSWRConfig();
-  const { data, error, isValidating } = useSWR(apiKeys.users, fetcher);
+  const { data, error, isValidating } = useSWR<User>(apiKeys.users, fetcher);
   const [logInError, setLogInError] = useState(false);
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
@@ -44,7 +50,7 @@ const LogIn: VFC<LoginProps> = () => {
         <Loading />
       ) : (
         <>
-          {data && <Redirect to="/workspaces/channel" />}
+          {data && <Redirect to="/workspace/channel" />}
           <div id="container">
             <Header>Sleact</Header>
             <Form onSubmit={onSubmit}>

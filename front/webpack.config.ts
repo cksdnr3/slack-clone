@@ -53,7 +53,7 @@ const config: webpack.Configuration = {
     open: true,
     historyApiFallback: true,
     port: 3090,
-    devMiddleware: { publicPath: '/dist' },
+    compress: true,
     static: { directory: path.resolve(__dirname, 'src') },
     liveReload: false,
     // proxy: {

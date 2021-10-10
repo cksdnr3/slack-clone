@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import useSWR from 'swr';
-import { Success, Form, Error, Label, Input, LinkContainer, Button, Header } from '@pages/signup/styles';
+import { Success, Form, Error, Label, Input, LinkContainer, Button, Header } from '@pages/Signup/styles';
 import { Link } from 'react-router-dom';
 import useInput from '@hooks/useInput';
 

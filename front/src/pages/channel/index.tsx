@@ -6,11 +6,7 @@ interface ChannelProps {}
 
 const Channel: VFC<ChannelProps> = () => {
   console.log('channel render');
-  return (
-    <Workspace>
-      <div>채널입니다.</div>
-    </Workspace>
-  );
+  return <div>채널입니다.</div>;
 };
 
 export default Channel;
