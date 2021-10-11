@@ -13,10 +13,11 @@ const Menu: FC<MenuProps> = ({ children, show, style, onCloseMenu, closeButton }
     e.stopPropagation();
   }, []);
 
+  if (!show) return null;
+
   return (
     <CreateMenu>
       <div style={style} onClick={stopPropagation}>
-        {closeButton && <CloseModalButton onClick={onCloseMenu}>&times;</CloseModalButton>}
         {children}
       </div>
     </CreateMenu>

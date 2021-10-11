@@ -17,6 +17,7 @@ export const ProfileImg = styled.img`
   width: 28px;
   height: 28px;
   position: absolute;
+  border-radius: 5px;
   top: 5px;
   right: 16px;
 `;
@@ -146,20 +147,20 @@ export const MenuScroll = styled.div`
 `;
 
 export const WorkspaceModal = styled.div`
-  padding: 10px 0 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
   & h2 {
     padding-left: 20px;
   }
   & > button {
     width: 100%;
     height: 28px;
-    padding: 4px;
     border: none;
     background: transparent;
-    border-top: 1px solid rgb(28, 29, 28);
     cursor: pointer;
     &:last-of-type {
-      border-bottom: 1px solid rgb(28, 29, 28);
+      margin-bottom: 5px;
     }
   }
 `;
@@ -181,14 +182,19 @@ export const AddButton = styled.button`
 
 export const WorkspaceButton = styled.button`
   display: inline-block;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 10px;
-  background: white;
-  border: 3px solid #3f0e40;
+  background: gray;
+  border: 2px;
   margin-bottom: 15px;
   font-size: 18px;
   font-weight: 700;
-  color: black;
+  color: white;
   cursor: pointer;
+`;
+
+export const WorkspaceModalTop = styled.div`
+  display: flex;
+  padding: 20px 24px 12px;
 `;

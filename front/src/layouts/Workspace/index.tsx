@@ -1,8 +1,8 @@
-import React, { MouseEvent, useCallback, useState, VFC } from 'react';
+import React, { useCallback, useState, VFC } from 'react';
 import Loading from '@components/Loading';
 import fetcher from '@utils/fetcher';
 import axios from 'axios';
-import { Redirect, Route, Switch } from 'react-router';
+import { Redirect, Route, Switch, useLocation } from 'react-router';
 import useSWR, { useSWRConfig } from 'swr';
 import { apiKeys } from '@constants/apiKeys';
 import {
@@ -20,17 +20,19 @@ import {
   WorkspaceButton,
   AddButton,
   WorkspaceModal,
+  WorkspaceModalTop,
 } from '@layouts/Workspace/styles';
 import gravatar from 'gravatar';
 import loadable from '@loadable/component';
 import Menu from '@components/Menu';
 import { Link } from 'react-router-dom';
 import { IUser } from '@typings/db';
-import { Button, Input, Label } from '@pages/Signup/styles';
-import useInput from '@hooks/useInput';
 import Modal from '@components/Modal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import CreateChannelForm from '@components/CreateChannelForm';
+import CreateWorkspaceForm from '@components/CreateWorkspaceForm';
+import Separator from '@components/Separator';
 
 const Channel = loadable(() => import('@pages/Channel'));
 const DirectMessage = loadable(() => import('@pages/DirectMessage'));
@@ -42,13 +44,12 @@ const Workspace: VFC<WorkspaceProps> = () => {
   const [showCreateWorkspaceModal, setShowCreateWorkspaceModal] = useState(false);
   const [showWorkspaceMenu, setShowWorkspaceMenu] = useState(false);
   const [showAddChannelModal, setShowAddChannelModal] = useState(false);
-  const [newWorkspace, onChangeNewWorkspace, setNewWorkspace] = useInput('');
-  const [newUrl, onChangeNewUrl, setNewUrl] = useInput('');
+  const location = useLocation();
+  const currentWorkspace = location.pathname.split('/')[2];
+
   const { mutate } = useSWRConfig();
   const { data: user, error, isValidating } = useSWR<IUser>(apiKeys.users, fetcher);
 
-  console.log(newWorkspace);
-  console.log(newUrl);
   const onLogout = useCallback(() => {
     axios
       .post('http://localhost:3095/api/users/logout', null, {
@@ -75,43 +76,6 @@ const Workspace: VFC<WorkspaceProps> = () => {
     setShowAddChannelModal((prev) => !prev);
   }, []);
 
-  const onCreateWorkspace = useCallback(
-    (e: MouseEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      console.log('click');
-      console.log(newWorkspace);
-      console.log(newUrl);
-
-      if (!newWorkspace || !newWorkspace.trim()) return;
-      if (!newUrl || !newUrl.trim()) return;
-
-      console.log('click');
-      console.log(newWorkspace);
-      console.log(newUrl);
-      axios
-        .post(
-          'http://localhost:3095/api/workspaces',
-          {
-            workspace: newWorkspace,
-            url: newUrl,
-          },
-          { withCredentials: true },
-        )
-        .then((res) => {
-          console.log(res.data);
-          onClickCreateWorkspace();
-          setNewWorkspace('');
-          setNewUrl('');
-        })
-        .catch((err) => {
-          if (axios.isAxiosError(err)) {
-            toast.error(err.response?.data);
-          }
-        });
-    },
-    [newWorkspace, newUrl],
-  );
-
   return (
     <div>
       {isValidating ? (
@@ -126,8 +90,12 @@ const Workspace: VFC<WorkspaceProps> = () => {
                 {showUserMenu && (
                   <Menu style={{ top: 38, right: 0 }} show={showUserMenu} onCloseMenu={onClickUserProfile}>
                     <ProfileModal>
-                      <img src={gravatar.url(user!.nickname, { s: '29px', d: 'retro' })} alt={user?.nickname} />
-                      <div>
+                      <img
+                        src={gravatar.url(user!.nickname, { s: '29px', d: 'retro' })}
+                        alt={user?.nickname}
+                        style={{ height: 36, width: 36 }}
+                      />
+                      <div style={{ lineHeight: '1.23463' }}>
                         <span id="profile-name">{user?.nickname}</span>
                         <span id="profile-active">Active</span>
                       </div>
@@ -150,15 +118,35 @@ const Workspace: VFC<WorkspaceProps> = () => {
               <AddButton onClick={onClickCreateWorkspace}>+</AddButton>
             </Workspaces>
             <Channels>
-              <WorkspaceName>ssss</WorkspaceName>
+              <WorkspaceName onClick={toggleWorkspaceMenu}>{currentWorkspace}</WorkspaceName>
               <MenuScroll>
-                <Menu show={showWorkspaceMenu} onCloseMenu={toggleWorkspaceMenu} style={{ top: 95, left: 80 }}>
-                  <WorkspaceModal>
-                    <h2>ssss</h2>
-                    <button onClick={onClickAddChannel}>채널 만들기</button>
-                    <button onClick={onLogout}>logout</button>
-                  </WorkspaceModal>
-                </Menu>
+                <span onClick={toggleWorkspaceMenu}>
+                  <Menu show={showWorkspaceMenu} onCloseMenu={toggleWorkspaceMenu} style={{ top: 102, left: 80 }}>
+                    <WorkspaceModal>
+                      <WorkspaceModalTop>
+                        <WorkspaceButton style={{ margin: 0 }}>
+                          {currentWorkspace.slice(0, 1).toUpperCase()}
+                        </WorkspaceButton>
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            marginLeft: '10px',
+                            fontSize: '13px',
+                            lineHeight: '1.38463',
+                          }}
+                        >
+                          <div style={{ margin: 0, fontWeight: 900 }}>{currentWorkspace}</div>
+                          <div>{user?.email}</div>
+                        </div>
+                      </WorkspaceModalTop>
+                      <Separator />
+                      <button onClick={onClickAddChannel}>채널 생성</button>
+                      <Separator />
+                      <button onClick={onLogout}>{currentWorkspace}에서 로그아웃</button>
+                    </WorkspaceModal>
+                  </Menu>
+                </span>
               </MenuScroll>
             </Channels>
             <Chats>
@@ -169,17 +157,10 @@ const Workspace: VFC<WorkspaceProps> = () => {
             </Chats>
           </WorkspaceWrapper>
           <Modal show={showCreateWorkspaceModal} onCloseModal={onClickCreateWorkspace}>
-            <form onSubmit={onCreateWorkspace}>
-              <Label>
-                <span>워크스페이스 이름</span>
-                <Input id="workspace" value={newWorkspace} onChange={onChangeNewWorkspace} />
-              </Label>
-              <Label>
-                <span>워크스페이스 url</span>
-                <Input id="workspace" value={newUrl} onChange={onChangeNewUrl} />
-              </Label>
-              <Button type="submit">생성하기</Button>
-            </form>
+            <CreateWorkspaceForm onCloseModal={onClickCreateWorkspace} />
+          </Modal>
+          <Modal show={showAddChannelModal} onCloseModal={onClickAddChannel}>
+            <CreateChannelForm />
           </Modal>
           <ToastContainer />
         </>
