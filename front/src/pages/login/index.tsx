@@ -1,7 +1,8 @@
-import Loading from '@components/loading';
+import Loading from '@components/Loading';
 import { apiKeys } from '@constants/apiKeys';
 import useInput from '@hooks/useInput';
 import { Success, Form, Error, Label, Input, LinkContainer, Button, Header } from '@pages/Signup/styles';
+import { IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
 import axios, { AxiosResponse } from 'axios';
 import React, { useCallback, useState, VFC } from 'react';
@@ -10,15 +11,9 @@ import useSWR, { useSWRConfig } from 'swr';
 
 interface LoginProps {}
 
-export interface User {
-  id: number;
-  nickname: string;
-  email: string;
-}
-
 const LogIn: VFC<LoginProps> = () => {
   const { mutate } = useSWRConfig();
-  const { data, error, isValidating } = useSWR<User>(apiKeys.users, fetcher);
+  const { data, error, isValidating } = useSWR<IUser>(apiKeys.users, fetcher);
   const [logInError, setLogInError] = useState(false);
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
