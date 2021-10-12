@@ -2,7 +2,7 @@ import React, { useCallback, useState, VFC } from 'react';
 import Loading from '@components/Loading';
 import fetcher from '@utils/fetcher';
 import axios from 'axios';
-import { Redirect, Route, Switch, useLocation } from 'react-router';
+import { Redirect, Route, Switch, useParams } from 'react-router';
 import useSWR, { useSWRConfig } from 'swr';
 import { apiKeys } from '@constants/apiKeys';
 import {
@@ -21,42 +21,45 @@ import {
   AddButton,
   WorkspaceModal,
   WorkspaceModalTop,
+  LinkWrap,
 } from '@layouts/Workspace/styles';
 import gravatar from 'gravatar';
 import loadable from '@loadable/component';
 import Menu from '@components/Menu';
-import { Link } from 'react-router-dom';
-import { IUser } from '@typings/db';
+import { IChannel, IUser } from '@typings/db';
 import Modal from '@components/Modal';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CreateChannelForm from '@components/CreateChannelForm';
 import CreateWorkspaceForm from '@components/CreateWorkspaceForm';
 import Separator from '@components/Separator';
+import InviteWorkspaceForm from '@components/InviteWorkspaceForm';
 
 const Channel = loadable(() => import('@pages/Channel'));
 const DirectMessage = loadable(() => import('@pages/DirectMessage'));
 
 interface WorkspaceProps {}
-
 const Workspace: VFC<WorkspaceProps> = () => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showCreateWorkspaceModal, setShowCreateWorkspaceModal] = useState(false);
   const [showWorkspaceMenu, setShowWorkspaceMenu] = useState(false);
   const [showAddChannelModal, setShowAddChannelModal] = useState(false);
-  const location = useLocation();
-  const currentWorkspace = location.pathname.split('/')[2];
+  const [showInviteWorkspace, setShowInviteWorkspace] = useState(false);
+  const { workspace } = useParams<{ workspace: string }>();
 
   const { mutate } = useSWRConfig();
-  const { data: user, error, isValidating } = useSWR<IUser>(apiKeys.users, fetcher);
-
+  const { data: user, isValidating: isUsersValidating } = useSWR<IUser>('http://localhost:3095/api/users', fetcher);
+  const { data: channels } = useSWR<IChannel[]>(
+    `http://localhost:3095/api/workspaces/${encodeURIComponent(workspace)}/channels`,
+    fetcher,
+  );
   const onLogout = useCallback(() => {
     axios
       .post('http://localhost:3095/api/users/logout', null, {
         withCredentials: true,
       })
       .then(() => {
-        mutate(apiKeys.users, false, false);
+        mutate('http://localhost:3095/api/users', false, false);
       });
   }, []);
 
@@ -74,11 +77,20 @@ const Workspace: VFC<WorkspaceProps> = () => {
 
   const onClickAddChannel = useCallback(() => {
     setShowAddChannelModal((prev) => !prev);
+    onCloseWorkspaceMenu();
+  }, []);
+
+  const onCloseWorkspaceMenu = useCallback(() => {
+    setShowWorkspaceMenu(false);
+  }, []);
+
+  const onClickInviteWorkspace = useCallback(() => {
+    setShowInviteWorkspace((prev) => !prev);
   }, []);
 
   return (
     <div>
-      {isValidating ? (
+      {isUsersValidating ? (
         <Loading />
       ) : (
         <>
@@ -108,24 +120,24 @@ const Workspace: VFC<WorkspaceProps> = () => {
           </Header>
           <WorkspaceWrapper>
             <Workspaces>
-              {user?.Workspaces.map((workspace) => {
+              {user?.Workspaces.map((ws) => {
                 return (
-                  <Link key={workspace.id} to={`/workspace/${workspace.name}/channel/일반`}>
-                    <WorkspaceButton>{workspace.name.slice(0, 1).toUpperCase()}</WorkspaceButton>
-                  </Link>
+                  <LinkWrap key={ws.id} to={`/workspace/${ws.name}/channel/일반`} select={`${ws.name === workspace}`}>
+                    <WorkspaceButton>{ws.name.slice(0, 1).toUpperCase()}</WorkspaceButton>
+                  </LinkWrap>
                 );
               })}
               <AddButton onClick={onClickCreateWorkspace}>+</AddButton>
             </Workspaces>
             <Channels>
-              <WorkspaceName onClick={toggleWorkspaceMenu}>{currentWorkspace}</WorkspaceName>
+              <WorkspaceName onClick={toggleWorkspaceMenu}>{workspace}</WorkspaceName>
               <MenuScroll>
                 <span onClick={toggleWorkspaceMenu}>
                   <Menu show={showWorkspaceMenu} onCloseMenu={toggleWorkspaceMenu} style={{ top: 102, left: 80 }}>
                     <WorkspaceModal>
                       <WorkspaceModalTop>
-                        <WorkspaceButton style={{ margin: 0 }}>
-                          {currentWorkspace.slice(0, 1).toUpperCase()}
+                        <WorkspaceButton style={{ margin: 0, border: 'none', borderRadius: '3px', cursor: 'default' }}>
+                          {workspace.slice(0, 1).toUpperCase()}
                         </WorkspaceButton>
                         <div
                           style={{
@@ -136,23 +148,27 @@ const Workspace: VFC<WorkspaceProps> = () => {
                             lineHeight: '1.38463',
                           }}
                         >
-                          <div style={{ margin: 0, fontWeight: 900 }}>{currentWorkspace}</div>
+                          <div style={{ margin: 0, fontWeight: 900 }}>{workspace}</div>
                           <div>{user?.email}</div>
                         </div>
                       </WorkspaceModalTop>
                       <Separator />
                       <button onClick={onClickAddChannel}>채널 생성</button>
+                      <button onClick={onClickInviteWorkspace}>{workspace}에 사용자 초대</button>
                       <Separator />
-                      <button onClick={onLogout}>{currentWorkspace}에서 로그아웃</button>
+                      <button onClick={onLogout}>{workspace}에서 로그아웃</button>
                     </WorkspaceModal>
                   </Menu>
                 </span>
+                {channels?.map((channel) => {
+                  return <div key={channel.id}>{channel.name}</div>;
+                })}
               </MenuScroll>
             </Channels>
             <Chats>
               <Switch>
-                <Route path="/workspace/channel/" component={Channel} />
-                <Route path="/workspace/dm/" component={DirectMessage} />
+                <Route path="/workspace/:workspace/channel/:channel" component={Channel} />
+                <Route path="/workspace/:workspace/dm/:id" component={DirectMessage} />
               </Switch>
             </Chats>
           </WorkspaceWrapper>
@@ -160,7 +176,10 @@ const Workspace: VFC<WorkspaceProps> = () => {
             <CreateWorkspaceForm onCloseModal={onClickCreateWorkspace} />
           </Modal>
           <Modal show={showAddChannelModal} onCloseModal={onClickAddChannel}>
-            <CreateChannelForm />
+            <CreateChannelForm onCloseModal={onClickAddChannel} />
+          </Modal>
+          <Modal show={showInviteWorkspace} onCloseModal={onClickInviteWorkspace}>
+            <InviteWorkspaceForm onCloseModal={onClickInviteWorkspace} />
           </Modal>
           <ToastContainer />
         </>

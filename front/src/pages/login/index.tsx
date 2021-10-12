@@ -6,17 +6,18 @@ import { IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
 import axios, { AxiosResponse } from 'axios';
 import React, { useCallback, useState, VFC } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 import useSWR, { useSWRConfig } from 'swr';
 
 interface LoginProps {}
 
 const LogIn: VFC<LoginProps> = () => {
   const { mutate } = useSWRConfig();
-  const { data, error, isValidating } = useSWR<IUser>(apiKeys.users, fetcher);
+  const { data: user, error, isValidating } = useSWR<IUser>('http://localhost:3095/api/users', fetcher);
   const [logInError, setLogInError] = useState(false);
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
+  const history = useHistory();
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
@@ -29,8 +30,9 @@ const LogIn: VFC<LoginProps> = () => {
             withCredentials: true,
           },
         )
-        .then((res) => {
-          mutate(apiKeys.users, res.data, false);
+        .then(() => {
+          mutate('http://localhost:3095/api/users');
+          // history.push('/login');
         })
         .catch((error) => {
           setLogInError(error.response?.data?.statusCode === 401);
@@ -45,7 +47,7 @@ const LogIn: VFC<LoginProps> = () => {
         <Loading />
       ) : (
         <>
-          {data && <Redirect to="/workspace/channel" />}
+          {user && <Redirect to={`/workspace/${user?.Workspaces[0]?.name}/channel/일반`} />}
           <div id="container">
             <Header>Sleact</Header>
             <Form onSubmit={onSubmit}>

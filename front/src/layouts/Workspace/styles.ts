@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Link } from 'react-router-dom';
 
 export const RightMenu = styled.div`
   float: right;
@@ -129,7 +130,7 @@ export const WorkspaceName = styled.button`
   border-top: 1px solid rgb(82, 38, 83);
   border-bottom: 1px solid rgb(82, 38, 83);
   font-weight: 900;
-  font-size: 24px;
+  font-size: 22px;
   background: transparent;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -139,6 +140,10 @@ export const WorkspaceName = styled.button`
   margin: 0;
   color: white;
   cursor: pointer;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
 `;
 
 export const MenuScroll = styled.div`
@@ -154,13 +159,19 @@ export const WorkspaceModal = styled.div`
     padding-left: 20px;
   }
   & > button {
+    text-align: left;
     width: 100%;
     height: 28px;
     border: none;
     background: transparent;
     cursor: pointer;
+    padding: 0 24px;
     &:last-of-type {
       margin-bottom: 5px;
+    }
+    &:hover {
+      background: #0067a3;
+      color: white;
     }
   }
 `;
@@ -180,16 +191,36 @@ export const AddButton = styled.button`
   cursor: pointer;
 `;
 
+interface WorkspaceButtonWrapProps {
+  select: string;
+}
+
+export const LinkWrap = styled(Link)<WorkspaceButtonWrapProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 11px;
+  border: ${(props) => (JSON.parse(props.select) ? '3px solid white;' : '')} 
+  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+
+  &:hover {
+    border: ${(props) => (JSON.parse(props.select) ? '3px solid white;' : '3px solid rgba(255, 255, 255, 0.3);')}
+    border-radius: 12px;
+    transition: 0.1s
+  }
+`;
+
 export const WorkspaceButton = styled.button`
   display: inline-block;
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: gray;
-  border: 2px;
-  margin-bottom: 15px;
-  font-size: 18px;
-  font-weight: 700;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #515151;
+  border: 1px solid #3f0e40;
+  font-size: 16px;
+  font-weight: 600;
   color: white;
   cursor: pointer;
 `;

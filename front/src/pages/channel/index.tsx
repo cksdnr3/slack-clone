@@ -2,14 +2,16 @@ import Loading from '@components/Loading';
 import Workspace from '@layouts/Workspace';
 import React, { VFC } from 'react';
 import { Container, Header } from '@pages/Channel/styles';
+import { useParams } from 'react-router';
 
 interface ChannelProps {}
 
 const Channel: VFC<ChannelProps> = () => {
+  const { channel } = useParams<{ channel: string }>();
   return (
     <Container>
       <Header>
-        <span>#channel</span>
+        <span># {channel}</span>
         <div className="header-right">
           <span>5</span>
           <button

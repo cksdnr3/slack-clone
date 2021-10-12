@@ -52,16 +52,10 @@ const config: webpack.Configuration = {
   devServer: {
     open: true,
     historyApiFallback: true,
+    devMiddleware: { publicPath: '/dist' },
     port: 3090,
-    compress: true,
     static: { directory: path.resolve(__dirname, 'src') },
     liveReload: false,
-    // proxy: {
-    //   '/api': {
-    //     target: 'http://localhost:3095',
-    //     changeOrinpmgin: true,
-    //   },
-    // },
   },
 };
 
