@@ -122,15 +122,15 @@ export const Channels = styled.nav`
 `;
 
 export const WorkspaceName = styled.button`
-  height: 64px;
-  line-height: 64px;
+  height: 50px;
+  line-height: 50px;
   border: none;
   width: 100%;
   text-align: left;
   border-top: 1px solid rgb(82, 38, 83);
   border-bottom: 1px solid rgb(82, 38, 83);
   font-weight: 900;
-  font-size: 22px;
+  font-size: 18px;
   background: transparent;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -196,6 +196,7 @@ interface WorkspaceButtonWrapProps {
 }
 
 export const LinkWrap = styled(Link)<WorkspaceButtonWrapProps>`
+  text-decoration: none;
   display: flex;
   justify-content: center;
   align-items: center;

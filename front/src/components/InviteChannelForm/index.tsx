@@ -7,21 +7,21 @@ import { Button, Footer, Title } from '@components/CreateChannelForm/styles';
 import axios from 'axios';
 import { useSWRConfig } from 'swr';
 
-interface InviteWorkspaceFormProps {
+interface InviteChannelFormProps {
   onCloseModal: () => void;
 }
 
-const InviteWorkspaceForm: FC<InviteWorkspaceFormProps> = ({ onCloseModal }) => {
-  const [email, onChangeEmail, setEmail] = useInput('');
+const InviteChannelForm: FC<InviteChannelFormProps> = ({ onCloseModal }) => {
+  const [member, onChangeMember, setMember] = useInput('');
   const { mutate } = useSWRConfig();
-  const { workspace } = useParams<{ workspace: string }>();
+  const { workspace, channel } = useParams<{ workspace: string; channel: string }>();
 
   const onInviteWorkspace = useCallback((e: MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!email || !email.trim()) return;
+    if (!member || !member.trim()) return;
     axios
       .post(`/api/workspaces/${workspace}/members`, {
-        email,
+        email: member,
       })
       .then(() => {
         onCloseModal();
@@ -31,31 +31,29 @@ const InviteWorkspaceForm: FC<InviteWorkspaceFormProps> = ({ onCloseModal }) => 
 
   useEffect(() => {
     return () => {
-      setEmail('');
+      setMember('');
     };
   }, []);
 
   return (
     <Form onSubmit={onInviteWorkspace}>
       <Title>
-        <h1 style={{ fontSize: '21px' }}>{workspace}(으)로 사용자 초대</h1>
+        <h1 style={{ fontSize: '17px' }}>사용자 추가</h1>
+        <div style={{ textAlign: 'left', fontSize: '12px' }}>#{channel}</div>
       </Title>
-      <Label>
-        <span>받는 사람:</span>
-        <Input
-          id="workspace"
-          value={email}
-          onChange={onChangeEmail}
-          placeholder="name@gmail.com"
-          style={{ marginBottom: 0, fontWeight: 100 }}
-        />
-      </Label>
+      <Input
+        id="workspace"
+        value={member}
+        onChange={onChangeMember}
+        placeholder="이름 또는 이메일 입력"
+        style={{ marginBottom: 0, fontWeight: 100 }}
+      />
       <Footer>
-        <div style={{ color: '#0067a3', fontWeight: 'bold' }}>초대 링크 복사</div>
-        <Button type="submit">보내기</Button>
+        <div />
+        <Button type="submit">완료됨</Button>
       </Footer>
     </Form>
   );
 };
 
-export default InviteWorkspaceForm;
+export default InviteChannelForm;

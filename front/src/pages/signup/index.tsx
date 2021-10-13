@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import useSWR from 'swr';
 import { Success, Form, Error, Label, Input, LinkContainer, Button, Header } from '@pages/Signup/styles';
 import { Link } from 'react-router-dom';
 import useInput from '@hooks/useInput';
@@ -12,8 +11,6 @@ type SignupReuqest = {
 };
 
 const SignUp = () => {
-  // const { data, error } = useSWR('/api/users');
-
   const [email, onChangeEmail] = useInput('');
   const [nickname, onChangeNickname] = useInput('');
   const [password, setPassword] = useState('');
@@ -47,7 +44,7 @@ const SignUp = () => {
         setSignUpError('');
         setSignUpSuccess(false);
         axios
-          .post('http://localhost:3095/api/users', { email, nickname, password })
+          .post('/api/users', { email, nickname, password })
           .then((res: AxiosResponse<SignupReuqest>) => {
             console.log(res.data);
             setSignUpSuccess(true);

@@ -13,7 +13,7 @@ interface LoginProps {}
 
 const LogIn: VFC<LoginProps> = () => {
   const { mutate } = useSWRConfig();
-  const { data: user, error, isValidating } = useSWR<IUser>('http://localhost:3095/api/users', fetcher);
+  const { data: user, error, isValidating } = useSWR<IUser>('/api/users', fetcher);
   const [logInError, setLogInError] = useState(false);
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
@@ -24,14 +24,14 @@ const LogIn: VFC<LoginProps> = () => {
       setLogInError(false);
       axios
         .post(
-          'http://localhost:3095/api/users/login',
+          '/api/users/login',
           { email, password },
           {
             withCredentials: true,
           },
         )
         .then(() => {
-          mutate('http://localhost:3095/api/users');
+          mutate('/api/users');
           // history.push('/login');
         })
         .catch((error) => {

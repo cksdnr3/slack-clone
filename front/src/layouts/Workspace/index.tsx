@@ -4,7 +4,6 @@ import fetcher from '@utils/fetcher';
 import axios from 'axios';
 import { Redirect, Route, Switch, useParams } from 'react-router';
 import useSWR, { useSWRConfig } from 'swr';
-import { apiKeys } from '@constants/apiKeys';
 import {
   Header,
   ProfileImg,
@@ -34,6 +33,11 @@ import CreateChannelForm from '@components/CreateChannelForm';
 import CreateWorkspaceForm from '@components/CreateWorkspaceForm';
 import Separator from '@components/Separator';
 import InviteWorkspaceForm from '@components/InviteWorkspaceForm';
+import InviteChannelForm from '@components/InviteChannelForm';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import ChannelList from '@components/ChannelList';
+import DMList from '@components/DMList';
 
 const Channel = loadable(() => import('@pages/Channel'));
 const DirectMessage = loadable(() => import('@pages/DirectMessage'));
@@ -48,18 +52,15 @@ const Workspace: VFC<WorkspaceProps> = () => {
   const { workspace } = useParams<{ workspace: string }>();
 
   const { mutate } = useSWRConfig();
-  const { data: user, isValidating: isUsersValidating } = useSWR<IUser>('http://localhost:3095/api/users', fetcher);
-  const { data: channels } = useSWR<IChannel[]>(
-    `http://localhost:3095/api/workspaces/${encodeURIComponent(workspace)}/channels`,
-    fetcher,
-  );
+  const { data: user, isValidating: isUsersValidating } = useSWR<IUser>('/api/users', fetcher);
+  const { data: channels } = useSWR<IChannel[]>(`/api/workspaces/${encodeURIComponent(workspace)}/channels`, fetcher);
   const onLogout = useCallback(() => {
     axios
-      .post('http://localhost:3095/api/users/logout', null, {
+      .post('/api/users/logout', null, {
         withCredentials: true,
       })
       .then(() => {
-        mutate('http://localhost:3095/api/users', false, false);
+        mutate('/api/users', false, false);
       });
   }, []);
 
@@ -86,6 +87,7 @@ const Workspace: VFC<WorkspaceProps> = () => {
 
   const onClickInviteWorkspace = useCallback(() => {
     setShowInviteWorkspace((prev) => !prev);
+    onCloseWorkspaceMenu();
   }, []);
 
   return (
@@ -130,7 +132,10 @@ const Workspace: VFC<WorkspaceProps> = () => {
               <AddButton onClick={onClickCreateWorkspace}>+</AddButton>
             </Workspaces>
             <Channels>
-              <WorkspaceName onClick={toggleWorkspaceMenu}>{workspace}</WorkspaceName>
+              <WorkspaceName onClick={toggleWorkspaceMenu}>
+                {workspace}
+                <FontAwesomeIcon icon={faAngleDown} style={{ marginLeft: '8px', fontSize: '15px' }} />
+              </WorkspaceName>
               <MenuScroll>
                 <span onClick={toggleWorkspaceMenu}>
                   <Menu show={showWorkspaceMenu} onCloseMenu={toggleWorkspaceMenu} style={{ top: 102, left: 80 }}>
@@ -160,9 +165,8 @@ const Workspace: VFC<WorkspaceProps> = () => {
                     </WorkspaceModal>
                   </Menu>
                 </span>
-                {channels?.map((channel) => {
-                  return <div key={channel.id}>{channel.name}</div>;
-                })}
+                <ChannelList user={user} />
+                <DMList user={user} />
               </MenuScroll>
             </Channels>
             <Chats>
@@ -181,6 +185,7 @@ const Workspace: VFC<WorkspaceProps> = () => {
           <Modal show={showInviteWorkspace} onCloseModal={onClickInviteWorkspace}>
             <InviteWorkspaceForm onCloseModal={onClickInviteWorkspace} />
           </Modal>
+
           <ToastContainer />
         </>
       )}

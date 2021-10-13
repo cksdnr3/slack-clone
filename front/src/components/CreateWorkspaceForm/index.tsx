@@ -26,7 +26,7 @@ const CreateWorkspaceForm: FC<CreateWorkspaceFormProps> = ({ onCloseModal }) => 
 
       axios
         .post(
-          'http://localhost:3095/api/workspaces',
+          '/api/workspaces',
           {
             workspace: newWorkspace,
             url: newUrl,
@@ -34,9 +34,8 @@ const CreateWorkspaceForm: FC<CreateWorkspaceFormProps> = ({ onCloseModal }) => 
           { withCredentials: true },
         )
         .then(() => {
-          console.log('success');
           onCloseModal();
-          mutate('http://localhost:3095/api/users');
+          mutate('/api/users');
         })
         .catch((err) => {
           if (axios.isAxiosError(err)) {

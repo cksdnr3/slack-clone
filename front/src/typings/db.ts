@@ -14,6 +14,13 @@ export interface IChannel {
   name: string;
   private: boolean; // 비공개 채널 여부, 강좌에서는 모두 false(공개)
   WorkspaceId: number;
+  Members: IChannelMember[];
+  createdAt: string;
+}
+
+export interface IChannelMember {
+  id: number;
+  ChannelMembers: { UserId: number };
 }
 
 export interface IChat {

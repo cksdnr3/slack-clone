@@ -1,6 +1,9 @@
 import styled from '@emotion/styled';
 
 export const CreateModal = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: fixed;
   text-align: center;
   left: 0;
@@ -9,7 +12,6 @@ export const CreateModal = styled.div`
   right: 0;
   z-index: 1022;
   & > div {
-    margin-top: 200px;
     display: inline-block;
     background: white;
     --saf-0: rgba(var(--sk_foreground_low, 29, 28, 29), 0.13);

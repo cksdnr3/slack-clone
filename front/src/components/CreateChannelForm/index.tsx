@@ -15,6 +15,7 @@ interface CreateChannelFormProps {
 
 const CreateChannelForm: FC<CreateChannelFormProps> = ({ onCloseModal }) => {
   const [newChannel, onChangeNewChannel, setNewChannel] = useInput('');
+  const [description, onChangeDescription, setDescription] = useInput('');
   const { workspace } = useParams<{ workspace: string }>();
   const { mutate } = useSWRConfig();
 
@@ -23,7 +24,7 @@ const CreateChannelForm: FC<CreateChannelFormProps> = ({ onCloseModal }) => {
       e.preventDefault();
       axios
         .post(
-          `http://localhost:3095/api/workspaces/${workspace}/channels`,
+          `/api/workspaces/${workspace}/channels`,
           {
             name: newChannel,
           },
@@ -33,7 +34,7 @@ const CreateChannelForm: FC<CreateChannelFormProps> = ({ onCloseModal }) => {
         )
         .then(() => {
           onCloseModal();
-          mutate(`http://localhost:3095/api/workspaces/${encodeURIComponent(workspace)}/channels`);
+          mutate(`/api/workspaces/${encodeURIComponent(workspace)}/channels`);
         })
         .catch((err) => {
           if (axios.isAxiosError(err)) {
@@ -71,7 +72,7 @@ const CreateChannelForm: FC<CreateChannelFormProps> = ({ onCloseModal }) => {
             (옵션)
           </span>
         </Label>
-        <Input id="workspace" value={newChannel} onChange={onChangeNewChannel} />
+        <Input id="workspace" value={description} onChange={onChangeDescription} />
         <br />
         <PublicCheck>
           <div style={{ textAlign: 'left' }}>
