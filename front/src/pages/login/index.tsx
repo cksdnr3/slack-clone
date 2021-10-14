@@ -1,10 +1,9 @@
 import Loading from '@components/Loading';
-import { apiKeys } from '@constants/apiKeys';
 import useInput from '@hooks/useInput';
-import { Success, Form, Error, Label, Input, LinkContainer, Button, Header } from '@pages/Signup/styles';
+import { Form, Error, Label, Input, LinkContainer, Button, Header } from '@pages/Signup/styles';
 import { IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import React, { useCallback, useState, VFC } from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import useSWR, { useSWRConfig } from 'swr';
@@ -17,7 +16,6 @@ const LogIn: VFC<LoginProps> = () => {
   const [logInError, setLogInError] = useState(false);
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
-  const history = useHistory();
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
@@ -32,7 +30,6 @@ const LogIn: VFC<LoginProps> = () => {
         )
         .then(() => {
           mutate('/api/users');
-          // history.push('/login');
         })
         .catch((error) => {
           setLogInError(error.response?.data?.statusCode === 401);

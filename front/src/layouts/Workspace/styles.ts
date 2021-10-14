@@ -122,6 +122,9 @@ export const Channels = styled.nav`
 `;
 
 export const WorkspaceName = styled.button`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   height: 50px;
   line-height: 50px;
   border: none;

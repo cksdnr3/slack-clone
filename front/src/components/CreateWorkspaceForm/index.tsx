@@ -4,7 +4,6 @@ import { Button, Input, Label } from '@pages/Signup/styles';
 import useInput from '@hooks/useInput';
 import { toast } from 'react-toastify';
 import { useSWRConfig } from 'swr';
-import { apiKeys } from '@constants/apiKeys';
 import { Form } from './styles';
 import { Title } from '@components/CreateChannelForm/styles';
 

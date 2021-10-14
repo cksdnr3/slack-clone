@@ -14,17 +14,14 @@ interface ChannelListProps {
 
 const ChannelList: FC<ChannelListProps> = ({ user }) => {
   const [channelCollapse, setChannelCollapse] = useState(false);
-  const [currentChannel, setCurrentChannel] = useState('일반');
-  const { channel, workspace } = useParams<{ channel: string; workspace: string }>();
+  const [currentChannel, setCurrentChannel] = useState('');
+  const { workspace } = useParams<{ workspace: string }>();
 
   const { data: channels } = useSWR<IChannel[]>(user ? `/api/workspaces/${workspace}/channels` : null, fetcher);
 
   const onCollapseButton = useCallback(() => {
     setChannelCollapse((prev) => !prev);
   }, []);
-
-  console.log(channel);
-  console.log(workspace);
 
   return (
     <>
@@ -35,14 +32,35 @@ const ChannelList: FC<ChannelListProps> = ({ user }) => {
           </CollapseButton>
           <span>Channels</span>
         </h2>
-        {!channelCollapse &&
+        {!channelCollapse ? (
           channels?.map((c) => {
             return (
-              <NavLink key={c.name} activeClassName="selected" to={`/workspace/${workspace}/channel/${c.name}`}>
+              <NavLink
+                key={c.name}
+                activeClassName="selected"
+                onClick={() => setCurrentChannel(c.name)}
+                to={`/workspace/${workspace}/channel/${c.name}`}
+                activeStyle={{
+                  background: 'rgb(0, 103, 163)',
+                }}
+              >
                 <span># {c.name}</span>
               </NavLink>
             );
-          })}
+          })
+        ) : (
+          <NavLink
+            style={{ display: 'none' }}
+            activeClassName="selected"
+            to={`/workspace/${workspace}/channel/${currentChannel}`}
+            activeStyle={{
+              background: 'rgb(0, 103, 163)',
+              display: 'flex',
+            }}
+          >
+            <span># {currentChannel}</span>
+          </NavLink>
+        )}
       </HoverWhite>
     </>
   );

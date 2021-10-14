@@ -16,18 +16,23 @@ const InviteWorkspaceForm: FC<InviteWorkspaceFormProps> = ({ onCloseModal }) => 
   const { mutate } = useSWRConfig();
   const { workspace } = useParams<{ workspace: string }>();
 
-  const onInviteWorkspace = useCallback((e: MouseEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!email || !email.trim()) return;
-    axios
-      .post(`/api/workspaces/${workspace}/members`, {
-        email,
-      })
-      .then(() => {
-        onCloseModal();
-        mutate(`/api/workspaces/${encodeURIComponent(workspace)}/channels`);
-      });
-  }, []);
+  const onInviteWorkspace = useCallback(
+    (e: MouseEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      console.log('enter');
+      if (!email || !email.trim()) return;
+      console.log('enter');
+      axios
+        .post(`/api/workspaces/${workspace}/members`, {
+          email,
+        })
+        .then(() => {
+          onCloseModal();
+          mutate(`/api/workspaces/${workspace}/members`);
+        });
+    },
+    [email, workspace],
+  );
 
   useEffect(() => {
     return () => {

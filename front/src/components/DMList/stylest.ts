@@ -46,9 +46,6 @@ export const HoverWhite = styled.div<{ collapse: boolean }>`
   & > a:hover {
     background: rgba(0, 0, 0, 0.15);
   }
-  & > a {
-    background: (${(props) => props.collapse && 'rgb(0, 103, 163);'});
-  }
 `;
 
 export const CollaptedChannels = styled.div``;

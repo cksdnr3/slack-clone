@@ -5,7 +5,6 @@ import axios from 'axios';
 import { useParams } from 'react-router';
 import { toast } from 'react-toastify';
 import { useSWRConfig } from 'swr';
-import { apiKeys } from '@constants/apiKeys';
 import { Form } from '@components/CreateWorkspaceForm/styles';
 import { Content, Title, Description, Label, PublicCheck, Footer, Button, Yellow, Check } from './styles';
 

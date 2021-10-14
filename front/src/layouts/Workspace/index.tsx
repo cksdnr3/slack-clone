@@ -35,9 +35,11 @@ import Separator from '@components/Separator';
 import InviteWorkspaceForm from '@components/InviteWorkspaceForm';
 import InviteChannelForm from '@components/InviteChannelForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faEdit, faLink, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import ChannelList from '@components/ChannelList';
 import DMList from '@components/DMList';
+import { NavLink } from 'react-router-dom';
+import { css } from '@emotion/react';
 
 const Channel = loadable(() => import('@pages/Channel'));
 const DirectMessage = loadable(() => import('@pages/DirectMessage'));
@@ -105,7 +107,7 @@ const Workspace: VFC<WorkspaceProps> = () => {
                   <Menu style={{ top: 38, right: 0 }} show={showUserMenu} onCloseMenu={onClickUserProfile}>
                     <ProfileModal>
                       <img
-                        src={gravatar.url(user!.nickname, { s: '29px', d: 'retro' })}
+                        src={gravatar.url(user!.nickname, { d: 'retro' })}
                         alt={user?.nickname}
                         style={{ height: 36, width: 36 }}
                       />
@@ -133,8 +135,23 @@ const Workspace: VFC<WorkspaceProps> = () => {
             </Workspaces>
             <Channels>
               <WorkspaceName onClick={toggleWorkspaceMenu}>
-                {workspace}
-                <FontAwesomeIcon icon={faAngleDown} style={{ marginLeft: '8px', fontSize: '15px' }} />
+                <div>
+                  {workspace}
+                  <FontAwesomeIcon icon={faAngleDown} style={{ marginLeft: '8px', fontSize: '15px' }} />
+                </div>
+                <FontAwesomeIcon
+                  icon={faEdit}
+                  style={{
+                    marginRight: '18px',
+                    background: 'white',
+                    color: '#3f0e40',
+                    padding: '9px 10px',
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: '100px',
+                    zIndex: 100,
+                  }}
+                />
               </WorkspaceName>
               <MenuScroll>
                 <span onClick={toggleWorkspaceMenu}>
@@ -165,6 +182,33 @@ const Workspace: VFC<WorkspaceProps> = () => {
                     </WorkspaceModal>
                   </Menu>
                 </span>
+                <NavLink
+                  style={{ marginTop: '10px', paddingLeft: '16px' }}
+                  activeClassName="selected"
+                  to={`/workspace/${workspace}/slack-connect`}
+                  activeStyle={{
+                    background: 'rgb(0, 103, 163)',
+                  }}
+                >
+                  <FontAwesomeIcon icon={faLink} style={{ marginRight: '5px' }} />
+                  <span>Slack Connect</span>
+                </NavLink>
+                <div
+                  css={css`
+                    display: flex;
+                    align-items: center;
+                    padding-left: 19px;
+                    height: 28px;
+                    cursor: pointer;
+
+                    &:hover {
+                      background: rgba(0, 0, 0, 0.1);
+                    }
+                  `}
+                >
+                  <FontAwesomeIcon icon={faEllipsisV} style={{ marginRight: '10px' }} />
+                  <span>Slack 찾아보기</span>
+                </div>
                 <ChannelList user={user} />
                 <DMList user={user} />
               </MenuScroll>
