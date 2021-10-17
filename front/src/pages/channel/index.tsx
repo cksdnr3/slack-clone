@@ -22,6 +22,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { Title } from '@components/CreateChannelForm/styles';
 import InviteChannelForm from '@components/InviteChannelForm';
+import ChatBox from '@components/ChatBox';
+import useInput from '@hooks/useInput';
 
 interface ChannelProps {}
 
@@ -31,6 +33,7 @@ const Channel: VFC<ChannelProps> = () => {
   const [currentCategory, setCurrentCategory] = useState('정보');
   const [showChannelMenu, setShowChannelMenu] = useState(false);
   const [showInviteChannel, setShowInviteChannel] = useState(false);
+  const [chat, onChangeChat, setChat] = useInput('');
 
   const { channel, workspace } = useParams<{ channel: string; workspace: string }>();
   const { data: channelMembers } = useSWR<IUser[]>(`/api/workspaces/${workspace}/channels/${channel}/members`, fetcher);
@@ -49,6 +52,12 @@ const Channel: VFC<ChannelProps> = () => {
     setShowChannelMenu(false);
   }, []);
 
+  const onSubmitMessage = useCallback((e: SubmitEvent) => {
+    e.preventDefault();
+    console.log('submit');
+    setChat('');
+  }, []);
+
   return (
     <Container>
       <Header>
@@ -60,6 +69,7 @@ const Channel: VFC<ChannelProps> = () => {
         </ChannelName>
         <div>5</div>
       </Header>
+      <ChatBox chat={chat} onChangeChat={onChangeChat} onSubmit={onSubmitMessage} />
       <Modal show={showChannelMenu} onCloseModal={onClickChannelMenu}>
         <ChannelModal>
           <ChannelModalHeader>

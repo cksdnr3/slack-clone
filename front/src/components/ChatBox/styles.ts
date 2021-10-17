@@ -60,13 +60,35 @@ export const Toolbox = styled.div<{ textFocus: boolean }>`
     !props.textFocus &&
     `
     border-top: 1px solid white;
-  opacity: 0.4;
+    opacity: 0.4 !important;
   `}
 `;
 
 export const Suffix = styled.div`
   display: flex;
   align-items: center;
+`;
+
+export const Formatter = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 7px 0 4px;
+`;
+
+export const Bolt = styled.button`
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.1s;
+  padding: 0;
+
+  &:hover {
+    background: #1264a3;
+    opacity: 1 !important;
+    border-radius: 1px;
+    color: white;
+  }
 `;
 
 export const Emoji = styled.button`
@@ -82,7 +104,7 @@ export const Emoji = styled.button`
 `;
 
 export const Tool = styled.div`
-  padding: 4px 0;
+  margin: 4px 0;
 `;
 
 export const SendButton = styled.button`

@@ -74,6 +74,11 @@ const DMList: FC<ChannelListProps> = ({ user }) => {
               background: 'rgb(0, 103, 163)',
             }}
           >
+            <img
+              src={gravatar.url(currentDmMember!.email, { s: '20px', d: 'mp' })}
+              alt={currentDmMember?.nickname}
+              style={{ height: 20, width: 20, borderRadius: '5px', marginRight: 7 }}
+            />
             <span>{currentDmMember.nickname}</span>
             {currentDmMember.id === user?.id && <span> (나)</span>}
           </NavLink>

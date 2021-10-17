@@ -1,6 +1,7 @@
 import { CollapseButton, CollaptedChannels, HoverWhite } from '@components/DMList/stylest';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import useSocket from '@hooks/useSocket';
 import { IChannel, IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
 import React, { FC, useCallback, useState } from 'react';
@@ -13,11 +14,14 @@ interface ChannelListProps {
 }
 
 const ChannelList: FC<ChannelListProps> = ({ user }) => {
+  const { workspace } = useParams<{ workspace: string; channel: string }>();
+  const location = useLocation();
   const [channelCollapse, setChannelCollapse] = useState(false);
-  const [currentChannel, setCurrentChannel] = useState('');
-  const { workspace } = useParams<{ workspace: string }>();
+  const [currentChannel, setCurrentChannel] = useState('일반');
 
   const { data: channels } = useSWR<IChannel[]>(user ? `/api/workspaces/${workspace}/channels` : null, fetcher);
+
+  console.log(location);
 
   const onCollapseButton = useCallback(() => {
     setChannelCollapse((prev) => !prev);

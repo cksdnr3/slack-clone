@@ -33,7 +33,7 @@ const CreateChannelForm: FC<CreateChannelFormProps> = ({ onCloseModal }) => {
         )
         .then(() => {
           onCloseModal();
-          mutate(`/api/workspaces/${encodeURIComponent(workspace)}/channels`);
+          mutate(`/api/workspaces/${workspace}/channels`);
         })
         .catch((err) => {
           if (axios.isAxiosError(err)) {

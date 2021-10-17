@@ -10,7 +10,6 @@ render(
   <BrowserRouter>
     <SWRConfig
       value={{
-        revalidateIfStale: false,
         revalidateOnFocus: false,
       }}
     >

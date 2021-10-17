@@ -1,8 +1,8 @@
-import React, { useCallback, useState, VFC } from 'react';
+import React, { useCallback, useEffect, useState, VFC } from 'react';
 import Loading from '@components/Loading';
 import fetcher from '@utils/fetcher';
 import axios from 'axios';
-import { Redirect, Route, Switch, useParams } from 'react-router';
+import { Redirect, Route, Switch, useHistory, useParams } from 'react-router';
 import useSWR, { useSWRConfig } from 'swr';
 import {
   Header,
@@ -40,29 +40,35 @@ import ChannelList from '@components/ChannelList';
 import DMList from '@components/DMList';
 import { NavLink } from 'react-router-dom';
 import { css } from '@emotion/react';
+import useSocket from '@hooks/useSocket';
 
 const Channel = loadable(() => import('@pages/Channel'));
 const DirectMessage = loadable(() => import('@pages/DirectMessage'));
 
 interface WorkspaceProps {}
 const Workspace: VFC<WorkspaceProps> = () => {
+  const { workspace } = useParams<{ workspace: string }>();
+  const params = useParams();
+  const [socket, disconnect] = useSocket(workspace);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showCreateWorkspaceModal, setShowCreateWorkspaceModal] = useState(false);
   const [showWorkspaceMenu, setShowWorkspaceMenu] = useState(false);
   const [showAddChannelModal, setShowAddChannelModal] = useState(false);
   const [showInviteWorkspace, setShowInviteWorkspace] = useState(false);
-  const { workspace } = useParams<{ workspace: string }>();
 
   const { mutate } = useSWRConfig();
   const { data: user, isValidating: isUsersValidating } = useSWR<IUser>('/api/users', fetcher);
-  const { data: channels } = useSWR<IChannel[]>(`/api/workspaces/${encodeURIComponent(workspace)}/channels`, fetcher);
+  const { data: channels } = useSWR<IChannel[]>(`/api/workspaces/${workspace}/channels`, fetcher);
+  const history = useHistory();
+
   const onLogout = useCallback(() => {
     axios
       .post('/api/users/logout', null, {
         withCredentials: true,
       })
       .then(() => {
-        mutate('/api/users', false, false);
+        mutate('/api/users');
+        history.push('/login');
       });
   }, []);
 
@@ -91,6 +97,18 @@ const Workspace: VFC<WorkspaceProps> = () => {
     setShowInviteWorkspace((prev) => !prev);
     onCloseWorkspaceMenu();
   }, []);
+
+  useEffect(() => {
+    if (channels && user && socket) {
+      socket.emit('login', { id: user.id, channels: channels.map((v) => v.id) });
+    }
+  }, [socket, channels, user]);
+
+  useEffect(() => {
+    return () => {
+      disconnect();
+    };
+  }, [workspace, disconnect]);
 
   return (
     <div>

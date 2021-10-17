@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { FC, MouseEvent, useCallback, useEffect } from 'react';
+import React, { FC, FormEvent, useCallback, useEffect } from 'react';
 import { Button, Input, Label } from '@pages/Signup/styles';
 import useInput from '@hooks/useInput';
 import { toast } from 'react-toastify';
@@ -17,7 +17,7 @@ const CreateWorkspaceForm: FC<CreateWorkspaceFormProps> = ({ onCloseModal }) => 
   const { mutate } = useSWRConfig();
 
   const onCreateWorkspace = useCallback(
-    (e: MouseEvent<HTMLFormElement>) => {
+    (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
       if (!newWorkspace || !newWorkspace.trim()) return;
