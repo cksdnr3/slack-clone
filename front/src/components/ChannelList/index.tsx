@@ -21,8 +21,6 @@ const ChannelList: FC<ChannelListProps> = ({ user }) => {
 
   const { data: channels } = useSWR<IChannel[]>(user ? `/api/workspaces/${workspace}/channels` : null, fetcher);
 
-  console.log(location);
-
   const onCollapseButton = useCallback(() => {
     setChannelCollapse((prev) => !prev);
   }, []);
