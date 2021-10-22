@@ -10,7 +10,7 @@ const ChannelInformation = () => {
   const { channel, workspace } = useParams<{ channel: string; workspace: string }>();
   const { data: user } = useSWR<IUser>('/api/users', fetcher);
   const { data: channels } = useSWR<IChannel[]>(
-    user ? `/api/workspaces/${encodeURIComponent(workspace)}/channels` : null,
+    user ? `/api/workspaces/${workspace}/channels` : null,
     fetcher,
   );
 
