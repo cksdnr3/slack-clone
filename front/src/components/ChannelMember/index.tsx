@@ -16,7 +16,6 @@ interface ChannelMemberProps {
 const ChannelMember: FC<ChannelMemberProps> = ({ onOpenModal }) => {
   const { channel, workspace } = useParams<{ channel: string; workspace: string }>();
   const { data: channelMembers } = useSWR<IUser[]>(`/api/workspaces/${workspace}/channels/${channel}/members`, fetcher);
-  
   return (
     <>
       <ChannelMemberWrapper>
