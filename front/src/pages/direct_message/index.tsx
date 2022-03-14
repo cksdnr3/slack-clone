@@ -1,5 +1,4 @@
 import Loading from '@components/Loading';
-import Workspace from '@layouts/Workspace';
 import { IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
 import React, { useCallback } from 'react';

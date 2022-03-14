@@ -1,65 +1,4 @@
 import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
-
-export const RightMenu = styled.div`
-  float: right;
-`;
-
-export const Header = styled.header`
-  height: 38px;
-  background: #350d36;
-  color: #ffffff;
-  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.1);
-  padding: 5px;
-  text-align: center;
-`;
-
-export const ProfileImg = styled.img`
-  width: 28px;
-  height: 28px;
-  position: absolute;
-  border-radius: 5px;
-  top: 5px;
-  right: 16px;
-`;
-
-export const ProfileModal = styled.div`
-  display: flex;
-  padding: 20px;
-  & img {
-    display: flex;
-  }
-  & > div {
-    display: flex;
-    flex-direction: column;
-    margin-left: 10px;
-  }
-  & #profile-name {
-    font-weight: bold;
-    display: inline-flex;
-  }
-  & #profile-active {
-    font-size: 13px;
-    display: inline-flex;
-  }
-`;
-
-export const LogOutButton = styled.button`
-  border: none;
-  width: 100%;
-  border-top: 1px solid rgb(29, 28, 29);
-  background: transparent;
-  display: block;
-  height: 33px;
-  padding: 5px 20px 5px;
-  outline: none;
-  cursor: pointer;
-`;
-
-export const WorkspaceWrapper = styled.div`
-  display: flex;
-  flex: 1;
-`;
 
 export const Workspaces = styled.div`
   width: 65px;
@@ -75,10 +14,10 @@ export const Workspaces = styled.div`
 `;
 
 export const Channels = styled.nav`
-  width: 260px;
   display: inline-flex;
   flex-direction: column;
   background: #3f0e40;
+  width: 260px;
   color: rgb(188, 171, 188);
   vertical-align: top;
   & a {
@@ -176,43 +115,6 @@ export const WorkspaceModal = styled.div`
       background: #0067a3;
       color: white;
     }
-  }
-`;
-
-export const Chats = styled.div`
-  flex: 1;
-`;
-
-export const AddButton = styled.button`
-  color: white;
-  font-size: 24px;
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-`;
-
-interface WorkspaceButtonWrapProps {
-  select: string;
-}
-
-export const LinkWrap = styled(Link)<WorkspaceButtonWrapProps>`
-  text-decoration: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 11px;
-  border: ${(props) => (JSON.parse(props.select) ? '3px solid white;' : '')} 
-  border-radius: 12px;
-  width: 44px;
-  height: 44px;
-
-  &:hover {
-    border: ${(props) => (JSON.parse(props.select) ? '3px solid white;' : '3px solid rgba(255, 255, 255, 0.3);')}
-    border-radius: 12px;
-    transition: 0.1s
   }
 `;
 

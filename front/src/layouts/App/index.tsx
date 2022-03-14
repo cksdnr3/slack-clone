@@ -1,9 +1,9 @@
 import React, { VFC } from 'react';
 import loadable from '@loadable/component';
 import { Switch, Route, Redirect } from 'react-router-dom';
-const Login = loadable(() => import('@pages/Login'));
-const Signup = loadable(() => import('@pages/Signup'));
-const Workspace = loadable(() => import('@layouts/Workspace'));
+const Login = loadable(() => import('@pages/login'));
+const Signup = loadable(() => import('@pages/signup'));
+const Workspace = loadable(() => import('@pages/workspace'));
 
 const App: VFC = () => {
   return (

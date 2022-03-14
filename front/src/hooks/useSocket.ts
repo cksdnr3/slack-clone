@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 
 type UserSocketReturns = [SocketIOClient.Socket | undefined, () => void];
 
-const defaultUrl = 'http://localhost:3095';
+const defaultUrl = 'http://localhost:8080';
 const sockets: { [key: string]: SocketIOClient.Socket } = {};
 
 const useSocket = (workspace?: string): UserSocketReturns => {

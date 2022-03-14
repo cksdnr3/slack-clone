@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { FC, FormEvent, useCallback, useEffect } from 'react';
-import { Button, Input, Label } from '@pages/Signup/styles';
+import { Button, Input, Label } from '@pages/signup/styles';
 import useInput from '@hooks/useInput';
 import { toast } from 'react-toastify';
 import { useSWRConfig } from 'swr';

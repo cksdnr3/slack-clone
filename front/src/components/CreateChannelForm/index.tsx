@@ -1,5 +1,5 @@
 import React, { FC, MouseEvent, useCallback, useEffect } from 'react';
-import { Input } from '@pages/Signup/styles';
+import { Input } from '@pages/signup/styles';
 import useInput from '@hooks/useInput';
 import axios from 'axios';
 import { useParams } from 'react-router';
@@ -22,15 +22,7 @@ const CreateChannelForm: FC<CreateChannelFormProps> = ({ onCloseModal }) => {
     (e: MouseEvent<HTMLFormElement>) => {
       e.preventDefault();
       axios
-        .post(
-          `/api/workspaces/${workspace}/channels`,
-          {
-            name: newChannel,
-          },
-          {
-            withCredentials: true,
-          },
-        )
+        .post(`/api/workspaces/${workspace}/channels`, { name: newChannel }, { withCredentials: true })
         .then(() => {
           onCloseModal();
           mutate(`/api/workspaces/${workspace}/channels`);

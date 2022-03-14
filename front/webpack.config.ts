@@ -19,6 +19,7 @@ const config: webpack.Configuration = {
       '@utils': path.resolve(__dirname, 'src/utils'),
       '@typings': path.resolve(__dirname, 'src/typings'),
       '@constants': path.resolve(__dirname, 'src/constants'),
+      '@apis': path.resolve(__dirname, 'src/apis'),
     },
   },
   entry: {
@@ -52,11 +53,11 @@ const config: webpack.Configuration = {
     open: true,
     historyApiFallback: true,
     devMiddleware: { publicPath: '/dist' },
-    port: 3090,
+    port: 3000,
     static: { directory: path.resolve(__dirname, 'src') },
     liveReload: false,
     proxy: {
-      '/api': 'http://localhost:3095',
+      '/api': 'http://localhost:8080',
     },
   },
 };

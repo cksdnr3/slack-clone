@@ -25,7 +25,8 @@
       "@pages/*": ["src/pages/*"],
       "@utils/*": ["src/utils/*"],
       "@typings/*": ["src/typings/*"],
-      "@constants/*": ["src/constants/*"]
+      "@constants/*": ["src/constants/*"],
+      "@apis/*": ["src/apis/*"]
     },
 
     "sourceMap": true,

@@ -10,7 +10,7 @@ import {
   DarkGrayBanner,
   GrayBanner,
   Header,
-} from '@pages/Channel/styles';
+} from '@pages/channel/styles';
 import { useParams } from 'react-router';
 import Modal from '@components/Modal';
 import useSWR from 'swr';

@@ -1,41 +1,32 @@
 import Loading from '@components/Loading';
 import useInput from '@hooks/useInput';
-import { Form, Error, Label, Input, LinkContainer, Button, Header } from '@pages/Signup/styles';
+import { Form, Error, Label, Input, LinkContainer, Button, Header } from '@pages/signup/styles';
 import { IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
-import axios from 'axios';
 import React, { useCallback, useState, VFC } from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
-import useSWR, { useSWRConfig } from 'swr';
+import { userAPI } from '@apis/users/index';
+import useSWR from 'swr';
 
 interface LoginProps {}
 
 const LogIn: VFC<LoginProps> = () => {
-  const { mutate } = useSWRConfig();
-  const { data: user, error, isValidating } = useSWR<IUser>('/api/users', fetcher);
-  const [logInError, setLogInError] = useState(false);
+  const { data: user, error, isValidating, mutate } = useSWR<IUser>('/api/users', fetcher);
+  const history = useHistory();
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
+
   const onSubmit = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
-      setLogInError(false);
-      axios
-        .post(
-          '/api/users/login',
-          { email, password },
-          {
-            withCredentials: true,
-          },
-        )
-        .then(() => {
-          mutate('/api/users');
-        })
-        .catch((error) => {
-          setLogInError(error.response?.data?.statusCode === 401);
-        });
+      try {
+        const response = await userAPI.post.login({ data: { email, password } });
+        await mutate(response.data);
+      } catch (e) {
+        console.log(e);
+      }
     },
-    [email, password],
+    [email, password, mutate],
   );
 
   return (
@@ -59,7 +50,7 @@ const LogIn: VFC<LoginProps> = () => {
                 <div>
                   <Input type="password" id="password" name="password" value={password} onChange={onChangePassword} />
                 </div>
-                {logInError && <Error>이메일과 비밀번호 조합이 일치하지 않습니다.</Error>}
+                {error && <Error>이메일과 비밀번호 조합이 일치하지 않습니다.</Error>}
               </Label>
               <Button type="submit">로그인</Button>
             </Form>

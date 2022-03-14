@@ -1,4 +1,4 @@
-import { Input } from '@pages/Signup/styles';
+import { Input } from '@pages/signup/styles';
 import { IChannel, IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
 import React, { FC } from 'react';

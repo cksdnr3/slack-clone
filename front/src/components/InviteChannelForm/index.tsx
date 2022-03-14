@@ -1,5 +1,5 @@
 import React, { FC, MouseEvent, useCallback, useEffect } from 'react';
-import { Input, Label } from '@pages/Signup/styles';
+import { Input, Label } from '@pages/signup/styles';
 import { useParams } from 'react-router';
 import useInput from '@hooks/useInput';
 import { Form } from '@components/CreateWorkspaceForm/styles';
