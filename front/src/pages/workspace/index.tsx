@@ -7,7 +7,7 @@ import { IChannel, IUser } from '@typings/db';
 import useSocket from '@hooks/useSocket';
 import Contents from '@pages/workspace/layouts/contents';
 import Header from './layouts/header';
-import SideBar from './layouts/side_bar';
+import SideBar from './layouts/sidebar';
 
 interface WorkspaceProps {}
 
@@ -15,7 +15,9 @@ const Workspace: VFC<WorkspaceProps> = () => {
   const { workspace } = useParams<{ workspace: string }>();
   const [socket, disconnect] = useSocket(workspace);
 
-  const { data: user, isValidating: isUsersValidating } = useSWR<IUser>('/api/users', fetcher);
+  const { data: user, isValidating: isUsersValidating } = useSWR<IUser>('/api/users', fetcher, {
+    dedupingInterval: 1000 * 60 * 60 * 60 * 24 * 7,
+  });
   const { data: channels } = useSWR<IChannel[]>(`/api/workspaces/${workspace}/channels`, fetcher);
 
   useEffect(() => {
@@ -28,7 +30,7 @@ const Workspace: VFC<WorkspaceProps> = () => {
     return () => {
       disconnect();
     };
-  }, [workspace, disconnect]);
+  }, [disconnect]);
 
   if (isUsersValidating) {
     return <Loading />;
@@ -41,7 +43,7 @@ const Workspace: VFC<WorkspaceProps> = () => {
   return (
     <>
       <Header />
-      <div style={{ display: 'flex', flex: 1 }}>
+      <div style={{ display: 'flex' }}>
         <SideBar />
         <Contents />
       </div>

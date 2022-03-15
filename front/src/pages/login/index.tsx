@@ -20,7 +20,7 @@ const LogIn: VFC<LoginProps> = () => {
     async (e) => {
       e.preventDefault();
       try {
-        const response = await userAPI.post.login({ data: { email, password } });
+        const response = await userAPI.post.login({ email, password });
         await mutate(response.data);
       } catch (e) {
         console.log(e);

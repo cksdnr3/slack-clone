@@ -30,7 +30,7 @@ const Header = () => {
         <span onClick={onClickUserProfile}>
           <ProfileImg src={gravatar.url(user!.nickname, { s: '29px', d: 'retro' })} alt={user?.nickname} />
           {showUserMenu && (
-            <Menu style={{ top: 38, right: 0 }} show={showUserMenu} onCloseMenu={onClickUserProfile}>
+            <Menu style={{ top: 38, right: 0 }} show={showUserMenu}>
               <ProfileModal>
                 <img
                   src={gravatar.url(user!.nickname, { d: 'retro' })}

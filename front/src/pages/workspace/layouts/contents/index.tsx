@@ -4,17 +4,15 @@ import 'react-toastify/dist/ReactToastify.css';
 import loadable from '@loadable/component';
 import { Chats } from './styles';
 
-const Channel = loadable(() => import('@pages/channel'));
-const DirectMessage = loadable(() => import('@pages/direct_message'));
+const Channel = loadable(() => import('@pages/workspace/components/Channel'));
+const DirectMessage = loadable(() => import('@pages/workspace/components/DM'));
 
 const Contents = () => {
   return (
-    <Chats>
-      <Switch>
-        <Route path="/workspace/:workspace/channel/:channel" component={Channel} />
-        <Route path="/workspace/:workspace/dm/:id" component={DirectMessage} />
-      </Switch>
-    </Chats>
+    <Switch>
+      <Route path="/workspace/:workspace/channel/:channel" component={Channel} />
+      <Route path="/workspace/:workspace/dm/:id" component={DirectMessage} />
+    </Switch>
   );
 };
 

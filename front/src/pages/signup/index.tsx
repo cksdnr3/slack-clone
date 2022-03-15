@@ -3,12 +3,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { Success, Form, Error, Label, Input, LinkContainer, Button, Header } from '@pages/signup/styles';
 import { Link } from 'react-router-dom';
 import useInput from '@hooks/useInput';
-
-type SignupReuqest = {
-  email: string;
-  nickname: string;
-  password: string;
-};
+import { userAPI } from '@apis/users';
 
 const SignUp = () => {
   const [email, onChangeEmail] = useInput('');
@@ -36,26 +31,18 @@ const SignUp = () => {
   );
 
   const onSubmit = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
       console.log(email, nickname, password, passwordCheck);
       if (!mismatchError && nickname) {
         console.log('회원가입');
-        setSignUpError('');
         setSignUpSuccess(false);
-        axios
-          .post('/api/users', { email, nickname, password })
-          .then((res: AxiosResponse<SignupReuqest>) => {
-            console.log(res.data);
-            setSignUpSuccess(true);
-          })
-          .catch((err: AxiosError) => {
-            if (axios.isAxiosError(err) && err.response) {
-              console.log(err.response);
-              setSignUpError(err.response.data);
-            }
-          })
-          .finally(() => {});
+        try {
+          const response = await userAPI.post.signup({ email, nickname, password });
+        } catch (e) {
+          console.log(e);
+        } finally {
+        }
       }
     },
     [email, nickname, password, passwordCheck],

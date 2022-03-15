@@ -8,11 +8,7 @@ const rootElement = document.getElementById('app');
 
 render(
   <BrowserRouter>
-    <SWRConfig
-      value={{
-        revalidateOnFocus: false,
-      }}
-    >
+    <SWRConfig value={{}}>
       <App />
     </SWRConfig>
   </BrowserRouter>,
