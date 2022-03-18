@@ -1,24 +1,24 @@
 import axios from 'axios';
 import React, { FC, FormEvent, useCallback, useEffect } from 'react';
-import { Button, Input, Label } from '@pages/signup/styles';
 import useInput from '@hooks/useInput';
 import { toast } from 'react-toastify';
 import useSWR, { useSWRConfig } from 'swr';
-import { Form } from './styles';
-import { Title } from '@pages/workspace/components/CreateChannelForm/styles';
 import { workspaceAPI } from '@apis/workspaces';
 import { IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
+import Input from '@components/Input';
+import Form from '@components/Form';
+import Button from '@components/Button';
 
 interface CreateWorkspaceFormProps {
   onCloseModal: () => void;
 }
 
 const CreateWorkspaceForm: FC<CreateWorkspaceFormProps> = ({ onCloseModal }) => {
-  const [workspace, onChangeWorkspace, setWorkspace] = useInput('');
   const { data: user, mutate } = useSWR<IUser>('/api/users', fetcher);
 
-  const [url, onChangeUrl, setUrl] = useInput('');
+  const { value: workspace, onChange: onChangeWorkspace, setValue: setWorkspace } = useInput('');
+  const { value: url, onChange: onChangeUrl, setValue: setUrl } = useInput('');
 
   const onCreateWorkspace = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
@@ -41,28 +41,16 @@ const CreateWorkspaceForm: FC<CreateWorkspaceFormProps> = ({ onCloseModal }) => 
     [workspace, url, user],
   );
 
-  useEffect(() => {
-    return () => {
-      setUrl('');
-      setWorkspace('');
-    };
-  }, []);
-
   return (
-    <Form onSubmit={onCreateWorkspace}>
-      <Title>
-        <h1>워크 스페이스 생성</h1>
-      </Title>
-      <Label>
-        <span>이름</span>
-        <Input id="workspace" value={workspace} onChange={onChangeWorkspace} />
-      </Label>
-      <Label>
-        <span>URL</span>
-        <Input id="workspace" value={url} onChange={onChangeUrl} />
-      </Label>
-      <Button type="submit">생성하기</Button>
-    </Form>
+    <Form
+      onSubmit={onCreateWorkspace}
+      header={<h1>워크 스페이스 생성</h1>}
+      body={[
+        <Input key={0} value={workspace} setValue={setWorkspace} onChange={onChangeWorkspace} label="이름" />,
+        <Input key={1} value={url} setValue={setUrl} onChange={onChangeUrl} label="URL" />,
+      ]}
+      footer={<Button type="submit" text="생성하기" color="gray" />}
+    />
   );
 };
 

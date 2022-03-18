@@ -7,17 +7,19 @@ import useToggle from '@hooks/useToggle';
 import { WorkspaceButton } from '@pages/workspace/layouts/sidebar/style';
 import { IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
-import React, { useCallback } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useSWR from 'swr';
 import { SidebarMenuFormStyle } from './styles';
 
-const SidebarMenuForm = () => {
+interface ISidebarMenuFormProps {
+  onToggleCreateChannelModal: () => void;
+  onToggleInviteWorkspaceModal: () => void;
+}
+
+const SidebarMenuForm: FC<ISidebarMenuFormProps> = ({ onToggleCreateChannelModal, onToggleInviteWorkspaceModal }) => {
   const { workspace } = useParams<{ workspace: string }>();
   const { data: user } = useSWR<IUser>('/api/users', fetcher);
-
-  const { toggle: createChannelModalToggle, onToggle: onToggleCreateChannelModal } = useToggle();
-  const { toggle: inviteWorkspaceModalToggle, onToggle: onToggleInviteWorkspaceModal } = useToggle();
 
   const onLogoutFromWorkspace = useCallback(async () => {
     if (!user) return;
@@ -26,7 +28,7 @@ const SidebarMenuForm = () => {
 
   return (
     <>
-      <SidebarMenuFormStyle.WorkspaceModal>
+      <SidebarMenuFormStyle.Wrapper>
         <SidebarMenuFormStyle.WorkspaceModalTop>
           <WorkspaceButton>{workspace.slice(0, 1).toUpperCase()}</WorkspaceButton>
           <div
@@ -47,13 +49,7 @@ const SidebarMenuForm = () => {
         <button onClick={onToggleInviteWorkspaceModal}>{workspace}에 사용자 초대</button>
         <Separator />
         <button onClick={onLogoutFromWorkspace}>{workspace}에서 로그아웃</button>
-      </SidebarMenuFormStyle.WorkspaceModal>
-      <Modal show={createChannelModalToggle} onCloseModal={onToggleCreateChannelModal}>
-        <CreateChannelForm onCloseModal={onToggleCreateChannelModal} />
-      </Modal>
-      <Modal show={inviteWorkspaceModalToggle} onCloseModal={onToggleInviteWorkspaceModal}>
-        <InviteWorkspaceForm onCloseModal={onToggleInviteWorkspaceModal} />
-      </Modal>
+      </SidebarMenuFormStyle.Wrapper>
     </>
   );
 };

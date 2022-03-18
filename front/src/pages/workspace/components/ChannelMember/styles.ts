@@ -11,6 +11,6 @@ export const ItemBox = styled.div`
   cursor: pointer;
 
   &:hover {
-    background: rgba(211, 211, 211, 0.15);
+    background: rgba(${({ theme }) => theme.palette.white[200]}, 0.8);
   }
 `;

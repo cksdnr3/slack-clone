@@ -5,6 +5,7 @@ import {
   ICreateWorkspaceRequestBody,
   ICreateWorkspaceResponseBody,
   IInviteChannelRequestBody,
+  IInviteWorkspaceRequestBody,
 } from './types';
 
 interface Query<S, P> {
@@ -22,6 +23,9 @@ export namespace workspaceAPI {
     },
     createWorkspace(body: ICreateWorkspaceRequestBody): AxiosPromise<ICreateWorkspaceResponseBody> {
       return axios.post('/api/workspaces', body, { withCredentials: true });
+    },
+    inviteWorkspace(query: Query<{ workspace: string }, {}>, body: IInviteWorkspaceRequestBody): AxiosPromise<void> {
+      return axios.post(`/api/workspaces/${query.string.workspace}/members`, body, { withCredentials: true });
     },
     inviteChannel(
       query: Query<{ workspace: string; channel: string }, {}>,

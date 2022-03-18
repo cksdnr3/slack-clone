@@ -1,26 +1,22 @@
 import styled from '@emotion/styled';
-// import { MentionsInput } from 'react-mentions';
 
 export const ChatArea = styled.div`
-  display: flex;
   width: 100%;
   padding: 20px;
   padding-top: 0;
 `;
 
 export const Form = styled.form`
-  color: rgb(29, 28, 29);
   font-size: 15px;
   width: 100%;
   border-radius: 4px;
-  border: 1px solid rgb(29, 28, 29);
+  border: 1px solid rgb(${({ theme }) => theme.palette.white[900]});
 `;
 
 export const MentionsTextarea = styled.textarea`
   display: flex;
   padding: 8px 9px;
   height: 38px;
-
   & strong {
     background: skyblue;
   }
@@ -46,12 +42,10 @@ export const MentionsTextarea = styled.textarea`
 `;
 
 export const Toolbox = styled.div<{ textFocus: boolean }>`
+  ${({ theme }) => theme.flexSet({ align: 'center', justify: 'space-between' })};
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgb(248, 248, 248);
-  border-top: 1px solid rgb(221, 221, 221);
+  background: rgb(${({ theme }) => theme.palette.white[200]});
+  border-top: 1px solid rgb(${({ theme }) => theme.palette.white[300]});
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   transition: opacity 0.2s, border 0.2s;
@@ -59,19 +53,17 @@ export const Toolbox = styled.div<{ textFocus: boolean }>`
   ${(props) =>
     !props.textFocus &&
     `
-    border-top: 1px solid white;
-    opacity: 0.4 !important;
+    border-top: 1px solid rgb(${props.theme.palette.white[100]});
+    opacity: 0.4;
   `}
 `;
 
 export const Suffix = styled.div`
-  display: flex;
-  align-items: center;
+  ${({ theme }) => theme.flexSet({ align: 'center' })};
 `;
 
 export const Formatter = styled.div`
-  display: flex;
-  align-items: center;
+  ${({ theme }) => theme.flexSet({ align: 'center' })};
   padding: 0 7px 0 4px;
 `;
 
@@ -84,10 +76,10 @@ export const Bolt = styled.button`
   padding: 0;
 
   &:hover {
-    background: #1264a3;
+    background: rgb(${({ theme }) => theme.main.hilightColor});
     opacity: 1 !important;
     border-radius: 1px;
-    color: white;
+    color: rgb(${({ theme }) => theme.palette.white[100]});
   }
 `;
 
@@ -98,7 +90,7 @@ export const Emoji = styled.button`
   cursor: pointer;
 
   &:hover {
-    background: rgb(221, 221, 221);
+    background: rgb(${({ theme }) => theme.palette.white[300]}, 0.3);
     border-radius: 4px;
   }
 `;
@@ -116,7 +108,7 @@ export const SendButton = styled.button`
   transition: background 0.2s;
 
   & > svg {
-    color: white;
+    color: rgb(${({ theme }) => theme.palette.white[100]});
   }
 
   ${(props) =>
@@ -125,12 +117,12 @@ export const SendButton = styled.button`
       background: transparent;
       border: transparent;
       & > svg {
-        color: gray;
+        color: rgb(${props.theme.palette.white[500]});
       }
   `
       : `  
-      background: #007a5a;
-      border: 1px solid #007a5a;
+      background: rgb(${props.theme.palette.green[700]});
+      border: 1px solid rgb(${props.theme.palette.green[700]});
       cursor: pointer;
       &:hover {
         opacity: 0.8;
@@ -145,26 +137,28 @@ export const FileClip = styled.button`
   transition: background 0.1s;
 
   &:hover {
-    background: rgb(221, 221, 221);
+    background: rgb(${({ theme }) => theme.palette.white[300]}, 0.3);
     border-radius: 4px;
   }
 `;
 
 export const EachMention = styled.button<{ focus: boolean }>`
+  ${({ theme, focus }) => `
+    ${theme.flexSet({ align: 'center' })};
+    ${
+      focus &&
+      `
+      background: rgb(${theme.main.hilightColor});
+      color: white;
+    `
+    }
+  `};
   padding: 4px 20px;
   background: transparent;
   border: none;
-  display: flex;
-  align-items: center;
-  color: rgb(28, 29, 28);
+  color: rgb(${({ theme }) => theme.palette.white[900]});
   width: 100%;
   & img {
     margin-right: 5px;
   }
-  ${({ focus }) =>
-    focus &&
-    `
-    background: #1264a3;
-    color: white;
-  `};
 `;

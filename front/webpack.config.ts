@@ -20,6 +20,7 @@ const config: webpack.Configuration = {
       '@typings': path.resolve(__dirname, 'src/typings'),
       '@constants': path.resolve(__dirname, 'src/constants'),
       '@apis': path.resolve(__dirname, 'src/apis'),
+      '@styles': path.resolve(__dirname, 'src/styles'),
     },
   },
   entry: {

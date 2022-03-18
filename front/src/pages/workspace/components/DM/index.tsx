@@ -13,9 +13,11 @@ interface DirectMessageProps {}
 
 const DirectMessage: FC<DirectMessageProps> = () => {
   const { workspace, id } = useParams<{ workspace: string; id: string }>();
-  const [chat, onChangeChat, setChat] = useInput('');
+
   const { data: user } = useSWR<IUser>(`/api/workspaces/${workspace}/users/${id}`, fetcher);
   const { data: Me } = useSWR<IUser>(`/api/users`, fetcher);
+
+  const { value: chat, onChange: onChangeChat, setValue: setChat } = useInput('');
 
   const onSubmitMessage = useCallback((e: SubmitEvent) => {
     e.preventDefault();

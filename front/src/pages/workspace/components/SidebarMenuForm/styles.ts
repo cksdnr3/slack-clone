@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export namespace SidebarMenuFormStyle {
-  export const WorkspaceModal = styled.div`
+  export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     padding: 0;

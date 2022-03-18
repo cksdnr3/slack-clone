@@ -9,7 +9,7 @@ export const ItemBox = styled.div`
 `;
 
 export const Wrap = styled.div`
-  background: #f5f5f5;
+  background: rgb(${({ theme }) => theme.palette.white[200]});
   height: 100%;
   border-radius: 0 0 6px 6px;
 `;

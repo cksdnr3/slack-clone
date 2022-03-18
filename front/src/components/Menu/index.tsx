@@ -4,9 +4,10 @@ import { CloseModalButton, CreateMenu } from './styles';
 interface MenuProps {
   show: boolean;
   style: CSSProperties;
+  onCloseMenu?: () => void;
 }
 
-const Menu: FC<MenuProps> = ({ children, show, style }) => {
+const Menu: FC<MenuProps> = ({ children, show, style, onCloseMenu }) => {
   const stopPropagation = useCallback((e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   }, []);
@@ -14,7 +15,7 @@ const Menu: FC<MenuProps> = ({ children, show, style }) => {
   if (!show) return null;
 
   return (
-    <CreateMenu>
+    <CreateMenu onClick={onCloseMenu}>
       <div style={style} onClick={stopPropagation}>
         {children}
       </div>

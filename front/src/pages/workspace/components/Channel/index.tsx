@@ -12,7 +12,7 @@ import ChannelConfig from '../ChannelConfig';
 interface ChannelProps {}
 
 const Channel: VFC<ChannelProps> = () => {
-  const [chat, onChangeChat, setChat] = useInput('');
+  const { value: chat, onChange: onChangeChat, setValue: setChat } = useInput('');
 
   const { toggle: channelConfigToggle, onToggle: onToggleChannelConfig } = useToggle();
 

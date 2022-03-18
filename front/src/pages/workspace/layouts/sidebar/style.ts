@@ -52,8 +52,8 @@ export const WorkspaceButton = styled.button`
   width: 34px;
   height: 34px;
   border-radius: 8px;
-  background: #515151;
-  border: 1px solid #3f0e40;
+  background: rgb(${({ theme }) => theme.palette.white[700]});
+  border: 1px solid rgb(${({ theme }) => theme.main.backgroundColor});
   margin: 0px;
   font-size: 16px;
   font-weight: 600;

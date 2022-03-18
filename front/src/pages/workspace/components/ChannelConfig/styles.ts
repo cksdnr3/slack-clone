@@ -4,8 +4,7 @@ export namespace ChannelConfigStyle {
   export const ChannelModalHeader = styled.div``;
 
   export const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
+    ${({ theme }) => theme.flexSet({ direction: 'column' })};
     height: min(85vh, 820px);
   `;
 
@@ -52,6 +51,7 @@ export namespace ChannelConfigStyle {
   }
 
   export const CategoryButton = styled.button<CategoryButtonProps>`
+    ${({ theme }) => theme.flexSet({ justify: 'center', align: 'center' })};
     outline: 0;
     color: rgba(var(--sk_primary_foreground, 29, 28, 29), 1);
     box-shadow: ${(props) => props.select && `inset 0 -2px 0 0 #007a5a;`};
@@ -64,9 +64,6 @@ export namespace ChannelConfigStyle {
     border: 0;
     color: rgba(var(--sk_foreground_max_solid, 97, 96, 97), 1);
     cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
     font-weight: 700;
     padding: 9px 0;
     margin: 0 8px;
@@ -74,12 +71,23 @@ export namespace ChannelConfigStyle {
     transition: box-shadow 0.125s ease-out;
 
     &:hover {
-      color: black;
+      color: ${({ theme }) => theme.palette.white[900]};
     }
   `;
   export const ChannelModalContent = styled.div`
-    display: flex;
-    flex-direction: column;
+    ${({ theme }) => theme.flexSet({ direction: 'column' })};
     height: 100%;
+  `;
+
+  export const Title = styled.div`
+    color: black;
+    padding: 20px 28px 0;
+    & > h1 {
+      font-weight: 900;
+      font-size: 25px;
+      line-height: 1.2143;
+      margin: 0;
+      text-align: left;
+    }
   `;
 }

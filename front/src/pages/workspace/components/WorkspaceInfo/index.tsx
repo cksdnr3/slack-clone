@@ -1,37 +1,41 @@
-import React from 'react';
-import CreateChannelForm from '@pages/workspace/components/CreateChannelForm';
-import InviteWorkspaceForm from '@pages/workspace/components/InviteWorkspaceForm';
+import React, { FC, useEffect } from 'react';
 import Menu from '@components/Menu';
-import Modal from '@components/Modal';
-import Separator from '@components/Separator';
 import { faAngleDown, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useToggle from '@hooks/useToggle';
-import { WorkspaceButton } from '@pages/workspace/layouts/sidebar/style';
-import { IUser } from '@typings/db';
-import fetcher from '@utils/fetcher';
 import { useParams } from 'react-router-dom';
-import useSWR from 'swr';
-import { SidebarHeaderStyle } from './styles';
+import { WorkspaceInfoStyle } from './styles';
 import SidebarMenuForm from '../SidebarMenuForm';
+import Modal from '@components/Modal';
+import CreateChannelForm from '../CreateChannelForm';
+import InviteWorkspaceForm from '../InviteWorkspaceForm';
+import { themeLib } from '@styles/themeLib';
 
 const WorkspaceInfo = () => {
   const { workspace } = useParams<{ workspace: string }>();
 
   const { toggle: menuToggle, onToggle: onToggleWorkspaceMenu } = useToggle();
+  const { toggle: createChannelModalToggle, onToggle: onToggleCreateChannelModal } = useToggle();
+  const { toggle: inviteWorkspaceModalToggle, onToggle: onToggleInviteWorkspaceModal } = useToggle();
+
+  useEffect(() => {
+    if (createChannelModalToggle || inviteWorkspaceModalToggle) {
+      onToggleWorkspaceMenu();
+    }
+  }, [createChannelModalToggle, inviteWorkspaceModalToggle, onToggleWorkspaceMenu]);
   return (
     <>
-      <SidebarHeaderStyle.Wrapper onClick={onToggleWorkspaceMenu}>
-        <SidebarHeaderStyle.WorkspaceName>
+      <WorkspaceInfoStyle.Wrapper onClick={onToggleWorkspaceMenu}>
+        <WorkspaceInfoStyle.WorkspaceName>
           {workspace}
           <FontAwesomeIcon icon={faAngleDown} style={{ marginLeft: '8px', fontSize: '15px' }} />
-        </SidebarHeaderStyle.WorkspaceName>
+        </WorkspaceInfoStyle.WorkspaceName>
         <FontAwesomeIcon
           icon={faEdit}
           style={{
             marginRight: '18px',
-            background: 'white',
-            color: '#3f0e40',
+            backgroundColor: `rgb(${themeLib.palette.white[100]})`,
+            color: `rgb(${themeLib.main.fontColor})`,
             padding: '9px 10px',
             width: '36px',
             height: '36px',
@@ -39,10 +43,19 @@ const WorkspaceInfo = () => {
             zIndex: 100,
           }}
         />
-        <Menu show={menuToggle} style={{ top: 102, left: 80 }}>
-          <SidebarMenuForm />
-        </Menu>
-      </SidebarHeaderStyle.Wrapper>
+      </WorkspaceInfoStyle.Wrapper>
+      <Menu show={menuToggle} onCloseMenu={onToggleWorkspaceMenu} style={{ top: 102, left: 80 }}>
+        <SidebarMenuForm
+          onToggleCreateChannelModal={onToggleCreateChannelModal}
+          onToggleInviteWorkspaceModal={onToggleInviteWorkspaceModal}
+        />
+      </Menu>
+      <Modal style={{}} show={createChannelModalToggle} onCloseModal={onToggleCreateChannelModal}>
+        <CreateChannelForm onCloseModal={onToggleCreateChannelModal} />
+      </Modal>
+      <Modal show={inviteWorkspaceModalToggle} onCloseModal={onToggleInviteWorkspaceModal}>
+        <InviteWorkspaceForm onCloseModal={onToggleInviteWorkspaceModal} />
+      </Modal>
     </>
   );
 };

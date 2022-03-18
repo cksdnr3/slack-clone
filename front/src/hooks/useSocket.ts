@@ -1,9 +1,9 @@
 import io from 'socket.io-client';
 import { useCallback } from 'react';
+import { END_POINT } from '@constants/url/END_POINT';
 
 type UserSocketReturns = [SocketIOClient.Socket | undefined, () => void];
 
-const defaultUrl = 'http://localhost:8080';
 const sockets: { [key: string]: SocketIOClient.Socket } = {};
 
 const useSocket = (workspace?: string): UserSocketReturns => {
@@ -16,7 +16,7 @@ const useSocket = (workspace?: string): UserSocketReturns => {
 
   if (!workspace) return [undefined, disconnect];
 
-  sockets[workspace] = io.connect(`${defaultUrl}/ws-${workspace}`); // socket 연결
+  sockets[workspace] = io.connect(`${END_POINT}/ws-${workspace}`); // socket 연결
 
   return [sockets[workspace], disconnect];
 };

@@ -19,11 +19,16 @@ export namespace WorkspacesStyle {
     color: white;
     font-size: 24px;
     display: inline-block;
-    width: 40px;
-    height: 40px;
+    width: 33px;
+    height: 33px;
     background: transparent;
     border: none;
     cursor: pointer;
+
+    &:hover {
+      background-color: rgb(211, 211, 211, 0.4);
+      border-radius: 6px;
+    }
   `;
 
   interface WorkspaceButtonWrapProps {

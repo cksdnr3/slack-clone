@@ -1,20 +1,21 @@
 import Loading from '@components/Loading';
 import useInput from '@hooks/useInput';
-import { Form, Error, Label, Input, LinkContainer, Button, Header } from '@pages/signup/styles';
+import { Form, Error, Label, LinkContainer, Button, Header } from '@pages/signup/styles';
 import { IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
 import React, { useCallback, useState, VFC } from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import { userAPI } from '@apis/users/index';
 import useSWR from 'swr';
+import Input from '@components/Input';
 
 interface LoginProps {}
 
 const LogIn: VFC<LoginProps> = () => {
   const { data: user, error, isValidating, mutate } = useSWR<IUser>('/api/users', fetcher);
-  const history = useHistory();
-  const [email, onChangeEmail] = useInput('');
-  const [password, onChangePassword] = useInput('');
+
+  const { value: email, setValue: setEmail, onChange: onChangeEmail } = useInput('');
+  const { value: password, setValue: setPassword, onChange: onChangePassword } = useInput('');
 
   const onSubmit = useCallback(
     async (e) => {
@@ -35,20 +36,26 @@ const LogIn: VFC<LoginProps> = () => {
         <Loading />
       ) : (
         <>
-          {user && <Redirect to={`/workspace/${user?.Workspaces[0]?.name}/channel/일반`} />}
+          {user && <Redirect to={`/workspace/${user?.Workspaces[0]?.url}/channel/일반`} />}
           <div id="container">
             <Header>Sleact</Header>
             <Form onSubmit={onSubmit}>
               <Label id="email-label">
                 <span>이메일 주소</span>
                 <div>
-                  <Input type="email" id="email" name="email" value={email} onChange={onChangeEmail} />
+                  <Input type="email" id="email" value={email} setValue={setEmail} onChange={onChangeEmail} />
                 </div>
               </Label>
               <Label id="password-label">
                 <span>비밀번호</span>
                 <div>
-                  <Input type="password" id="password" name="password" value={password} onChange={onChangePassword} />
+                  <Input
+                    type="password"
+                    id="password"
+                    value={password}
+                    setValue={setPassword}
+                    onChange={onChangePassword}
+                  />
                 </div>
                 {error && <Error>이메일과 비밀번호 조합이 일치하지 않습니다.</Error>}
               </Label>

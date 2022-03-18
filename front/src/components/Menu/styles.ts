@@ -14,7 +14,6 @@ export const CreateMenu = styled.div`
     box-shadow: 0 0 0 1px var(--saf-0), 0 4px 12px 0 rgba(0, 0, 0, 0.12);
     background-color: rgba(var(--sk_foreground_min_solid, 248, 248, 248), 1);
     border-radius: 6px;
-    user-select: none;
     min-width: 310px;
     z-index: 512;
     max-height: calc(100vh - 20px);

@@ -7,7 +7,6 @@ import { useParams } from 'react-router-dom';
 import useSWR from 'swr';
 import ChannelInformation from '../ChannelInfo';
 import ChannelMember from '../ChannelMember';
-import { Title } from '../CreateChannelForm/styles';
 import InviteChannelForm from '../InviteChannelForm';
 import { ChannelConfigStyle } from './styles';
 
@@ -19,7 +18,6 @@ const ChannelConfig = () => {
   const { data: channelMembers } = useSWR<IUser[]>(`/api/workspaces/${workspace}/channels/${channel}/members`, fetcher);
 
   const [currentCategory, setCurrentCategory] = useState('정보');
-  const { toggle: inviteChannelFormToggle, onToggle: onToggleInviteChannelForm } = useToggle();
 
   const onClickCategory = useCallback((c) => {
     setCurrentCategory(c);
@@ -31,9 +29,9 @@ const ChannelConfig = () => {
     <>
       <ChannelConfigStyle.Wrapper>
         <ChannelConfigStyle.ChannelModalHeader>
-          <Title style={{ padding: '20px 28px 0' }}>
+          <ChannelConfigStyle.Title>
             <h1 style={{ fontSize: 20 }}>#{channel}</h1>
-          </Title>
+          </ChannelConfigStyle.Title>
           <div style={{ display: 'flex', margin: '12px 0 8px 28px' }}>
             <ChannelConfigStyle.GrayBanner>알림 활성화</ChannelConfigStyle.GrayBanner>
             <ChannelConfigStyle.DarkGrayBanner style={{ marginLeft: 15 }}>통화 시작</ChannelConfigStyle.DarkGrayBanner>

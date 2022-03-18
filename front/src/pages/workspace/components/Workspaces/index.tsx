@@ -21,7 +21,7 @@ const Workspaces = () => {
         <WorkspacesStyle.LinkWrap
           key={ws.id}
           to={`/workspace/${ws.url}/channel/일반`}
-          select={`${ws.name === workspace}`}
+          select={`${ws.url === workspace}`}
         >
           <WorkspaceButton>{ws.name.slice(0, 1).toUpperCase()}</WorkspaceButton>
         </WorkspacesStyle.LinkWrap>

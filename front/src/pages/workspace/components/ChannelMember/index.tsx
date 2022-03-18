@@ -1,7 +1,6 @@
-import { Input } from '@pages/signup/styles';
 import { IChannel, IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useParams } from 'react-router';
 import useSWR from 'swr';
 import { ChannelMemberWrapper, ItemBox } from './styles';
@@ -11,6 +10,8 @@ import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import Modal from '@components/Modal';
 import InviteChannelForm from '../InviteChannelForm';
 import useToggle from '@hooks/useToggle';
+import Input from '@components/Input';
+import useInput from '@hooks/useInput';
 
 interface ChannelMemberProps {
   // onOpenModal: () => void;
@@ -18,6 +19,7 @@ interface ChannelMemberProps {
 
 const ChannelMember: FC<ChannelMemberProps> = ({}) => {
   const { channel, workspace } = useParams<{ channel: string; workspace: string }>();
+  const { value: member, setValue: setMembetr, onChange: onChangeMember } = useInput('');
   const { data: channelMembers } = useSWR<IUser[]>(`/api/workspaces/${workspace}/channels/${channel}/members`, fetcher);
 
   const { toggle: inviteChannelFormToggle, onToggle: onToggleInviteChannelForm } = useToggle();
@@ -26,7 +28,13 @@ const ChannelMember: FC<ChannelMemberProps> = ({}) => {
     <>
       <ChannelMemberWrapper>
         <ItemBox style={{ paddingTop: 0, paddingBottom: 16 }}>
-          <Input style={{ height: '36px', fontWeight: 100, margin: 0 }} placeholder="멤버 찾기" />
+          <Input
+            value={member}
+            setValue={setMembetr}
+            onChange={onChangeMember}
+            style={{ height: '36px', fontWeight: 100, margin: 0 }}
+            placeholder="멤버 찾기"
+          />
         </ItemBox>
         <ItemBox onClick={onToggleInviteChannelForm} style={{ paddingTop: 12, paddingBottom: 12 }}>
           <div style={{ display: 'flex', alignItems: 'center', padding: '0 12px' }}>

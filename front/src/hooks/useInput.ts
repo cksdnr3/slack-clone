@@ -1,14 +1,23 @@
 import { ChangeEvent, Dispatch, SetStateAction, useCallback, useState } from 'react';
 
-type UseInput<T> = [T, (e: ChangeEvent<HTMLInputElement>) => void, Dispatch<SetStateAction<T>>];
+type Validator = (value: string) => boolean;
 
-const useInput = <T = any>(initialData: T): UseInput<T> => {
+const useInput = <T = any>(initialData: T, validator?: Validator) => {
   const [value, setValue] = useState(initialData);
-  const handler = useCallback((e) => {
-    setValue(e.target.value);
-  }, []);
+  const [isValid, setIsValid] = useState(false);
 
-  return [value, handler, setValue];
+  const onChange = useCallback(
+    (e) => {
+      setValue(e.target.value);
+
+      if (validator) {
+        setIsValid(validator(e.target.value));
+      }
+    },
+    [validator],
+  );
+
+  return { value, isValid, onChange, setValue };
 };
 
 export default useInput;

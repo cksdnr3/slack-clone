@@ -16,3 +16,7 @@ export interface ICreateWorkspaceRequestBody {
 }
 
 export interface ICreateWorkspaceResponseBody extends IWorkspace {}
+
+export interface IInviteWorkspaceRequestBody {
+  email: string;
+}

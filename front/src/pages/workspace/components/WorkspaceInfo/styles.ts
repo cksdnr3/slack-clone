@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export namespace SidebarHeaderStyle {
+export namespace WorkspaceInfoStyle {
   export const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;

@@ -1,11 +1,12 @@
 import React, { FC, MouseEvent, useCallback, useEffect } from 'react';
-import { Input } from '@pages/signup/styles';
 import { useParams } from 'react-router';
 import useInput from '@hooks/useInput';
-import { Form } from '@pages/workspace/components/CreateWorkspaceForm/styles';
-import { Button, Footer, Title } from '@pages/workspace/components/CreateChannelForm/styles';
 import { useSWRConfig } from 'swr';
 import { workspaceAPI } from '@apis/workspaces';
+import Form from '@components/Form';
+import Input from '@components/Input';
+import Button from '@components/Button';
+import { InviteChannelFormStyle } from './styles';
 
 interface InviteChannelFormProps {
   onCloseModal: () => void;
@@ -16,7 +17,7 @@ const InviteChannelForm: FC<InviteChannelFormProps> = ({ onCloseModal }) => {
 
   const { mutate } = useSWRConfig();
 
-  const [email, onChangeEmail, setEmail] = useInput('');
+  const { value: email, onChange: onChangeEmail, setValue: setEmail } = useInput('');
 
   const onInviteWorkspace = useCallback(
     async (e: MouseEvent<HTMLFormElement>) => {
@@ -40,22 +41,25 @@ const InviteChannelForm: FC<InviteChannelFormProps> = ({ onCloseModal }) => {
   }, []);
 
   return (
-    <Form onSubmit={onInviteWorkspace}>
-      <Title>
-        <h1 style={{ fontSize: '17px' }}>사용자 추가</h1>
-        <div style={{ textAlign: 'left', fontSize: '12px' }}>#{channel}</div>
-      </Title>
-      <Input
-        id="workspace"
-        value={email}
-        onChange={onChangeEmail}
-        placeholder="이름 또는 이메일 입력"
-        style={{ marginBottom: 0, fontWeight: 100, color: 'black' }}
-      />
-      <Footer style={{ alignSelf: 'end' }}>
-        <Button type="submit">저장</Button>
-      </Footer>
-    </Form>
+    <Form
+      onSubmit={onInviteWorkspace}
+      header={
+        <>
+          <InviteChannelFormStyle.Heading>사용자 추가</InviteChannelFormStyle.Heading>
+          <InviteChannelFormStyle.WorkspaceName># {channel}</InviteChannelFormStyle.WorkspaceName>
+        </>
+      }
+      body={[
+        <Input
+          key={0}
+          value={email}
+          setValue={setEmail}
+          onChange={onChangeEmail}
+          placeholder="이름 또는 이메일 입력"
+        />,
+      ]}
+      footer={<Button style={{}} type="submit" text="저장" color="gray" />}
+    />
   );
 };
 
