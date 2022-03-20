@@ -1,15 +1,14 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import PublicChannelList from '@pages/workspace/components/PublicChannelList';
 import PrivateChannelList from '@pages/workspace/components/PrivateChannelList';
-import { faLink, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IChannel, IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
-import { NavLink, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import useSWR from 'swr';
-import { Channels, MenuScroll } from './style';
+import { SidebarStyle } from './style';
 import WorkspaceInfo from '@pages/workspace/components/WorkspaceInfo';
 import Workspaces from '@pages/workspace/components/Workspaces';
+import DefaultChannelList from '@pages/workspace/components/DefaultChannelList';
 
 const SideBar = () => {
   const { workspace } = useParams<{ workspace: string }>();
@@ -20,28 +19,14 @@ const SideBar = () => {
   return (
     <>
       <Workspaces />
-      <Channels>
+      <SidebarStyle.Channels>
         <WorkspaceInfo />
-        <MenuScroll>
-          <NavLink
-            style={{ paddingLeft: 16, marginTop: 10 }}
-            activeClassName="selected"
-            to={`/workspace/${workspace}/slack-connect`}
-            activeStyle={{
-              background: 'rgb(0, 103, 163)',
-            }}
-          >
-            <FontAwesomeIcon icon={faLink} style={{ marginRight: '5px' }} />
-            <span>Slack Connect</span>
-          </NavLink>
-          <div style={{ paddingLeft: 16, marginTop: 10 }}>
-            <FontAwesomeIcon icon={faEllipsisV} style={{ marginRight: '10px' }} />
-            <span>Slack 찾아보기</span>
-          </div>
+        <SidebarStyle.MenuScroll>
+          <DefaultChannelList />
           <PublicChannelList user={user} />
           <PrivateChannelList user={user} />
-        </MenuScroll>
-      </Channels>
+        </SidebarStyle.MenuScroll>
+      </SidebarStyle.Channels>
     </>
   );
 };

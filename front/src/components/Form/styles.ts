@@ -23,7 +23,11 @@ export namespace FormStyle {
     }
   `;
 
-  export const Body = styled.div``;
+  export const Body = styled.div`
+    &:not(:last-child) > * > input {
+      margin-bottom: 8px;
+    }
+  `;
 
   export const Footer = styled.div`
     ${({ theme }) => theme.flexSet({ justify: 'space-between', align: 'center' })}

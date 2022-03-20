@@ -2,14 +2,10 @@ import styled from '@emotion/styled';
 
 export const CollapseButton = styled.button<{ collapse: boolean }>`
   background: transparent;
+  margin-right: 11px;
   border: none;
-  width: 26px;
-  height: 26px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
+  padding: 0;
   color: rgb(188, 171, 188);
-  margin-left: 10px;
   cursor: pointer;
 
   ${({ collapse }) =>

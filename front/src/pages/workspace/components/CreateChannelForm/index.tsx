@@ -27,7 +27,7 @@ const CreateChannelForm: FC<CreateChannelFormProps> = ({ onCloseModal }) => {
   const onCreateChannel = useCallback(
     async (e: MouseEvent<HTMLFormElement>) => {
       e.preventDefault();
-      if (!channels) return;
+      if (!channels || !workspace) return;
       try {
         const response = await workspaceAPI.post.createChannel(
           { string: { workspace }, params: {} },

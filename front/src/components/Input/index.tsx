@@ -15,7 +15,7 @@ const Input: FC<IInputProps> = (props) => {
   return (
     <InputStyle.Label>
       <span>{props.label}</span>
-      <InputStyle.Wrapper {...props} />
+      <InputStyle.Input {...props} />
     </InputStyle.Label>
   );
 };

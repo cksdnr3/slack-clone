@@ -1,22 +1,22 @@
-import { CollapseButton, CollaptedChannels, HoverWhite } from '@pages/workspace/components/PrivateChannelList/stylest';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import { CollapseButton, HoverWhite } from '@pages/workspace/components/PrivateChannelList/styles';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IChannel, IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
-import React, { FC, useCallback, useState } from 'react';
-import { useLocation, useParams } from 'react-router';
-import { NavLink } from 'react-router-dom';
+import { useParams } from 'react-router';
 import useSWR from 'swr';
+import { SidebarStyle } from '@pages/workspace/layouts/sidebar/style';
+import { themeLib } from '@styles/themeLib';
 
 interface ChannelListProps {
   user?: IUser;
 }
 
 const PublicChannelList: FC<ChannelListProps> = ({ user }) => {
-  const { workspace } = useParams<{ workspace: string; channel: string }>();
-  const location = useLocation();
+  const { workspace, channel } = useParams<{ workspace: string; channel: string }>();
   const [channelCollapse, setChannelCollapse] = useState(false);
-  const [currentChannel, setCurrentChannel] = useState('일반');
+  const [currentChannel, setCurrentChannel] = useState(channel);
 
   const { data: channels } = useSWR<IChannel[]>(user ? `/api/workspaces/${workspace}/channels` : null, fetcher);
 
@@ -24,46 +24,37 @@ const PublicChannelList: FC<ChannelListProps> = ({ user }) => {
     setChannelCollapse((prev) => !prev);
   }, []);
 
+  useEffect(() => {
+    setCurrentChannel(channel);
+  }, [channel]);
+
   return (
-    <>
-      <HoverWhite collapse={channelCollapse}>
-        <h2 style={{ cursor: 'pointer' }} onClick={onCollapseButton}>
-          <CollapseButton collapse={channelCollapse}>
-            <FontAwesomeIcon icon={faCaretDown} />
-          </CollapseButton>
-          <span>Channels</span>
-        </h2>
-        {!channelCollapse ? (
-          channels?.map((c) => {
-            return (
-              <NavLink
-                key={c.name}
-                activeClassName="selected"
-                onClick={() => setCurrentChannel(c.name)}
-                to={`/workspace/${workspace}/channel/${c.name}`}
-                activeStyle={{
-                  background: 'rgb(0, 103, 163)',
-                }}
-              >
-                <span># {c.name}</span>
-              </NavLink>
-            );
-          })
-        ) : (
-          <NavLink
-            style={{ display: 'none' }}
-            activeClassName="selected"
-            to={`/workspace/${workspace}/channel/${currentChannel}`}
-            activeStyle={{
-              background: 'rgb(0, 103, 163)',
-              display: 'flex',
-            }}
+    <HoverWhite collapse={channelCollapse}>
+      <SidebarStyle.SidebarToggle onClick={onCollapseButton}>
+        <CollapseButton collapse={channelCollapse}>
+          <FontAwesomeIcon icon={faCaretDown} />
+        </CollapseButton>
+        <span>Channels</span>
+      </SidebarStyle.SidebarToggle>
+      {!channelCollapse ? (
+        channels?.map((c) => (
+          <SidebarStyle.NavLinkWrapper
+            key={c.name}
+            onClick={() => setCurrentChannel(c.name)}
+            to={`/workspace/${workspace}/channel/${c.name}`}
           >
-            <span># {currentChannel}</span>
-          </NavLink>
-        )}
-      </HoverWhite>
-    </>
+            <span># {c.name}</span>
+          </SidebarStyle.NavLinkWrapper>
+        ))
+      ) : (
+        <SidebarStyle.NavLinkWrapper
+          style={{ display: currentChannel === channel ? 'flex' : 'none' }}
+          to={`/workspace/${workspace}/channel/${currentChannel}`}
+        >
+          <span># {currentChannel}</span>
+        </SidebarStyle.NavLinkWrapper>
+      )}
+    </HoverWhite>
   );
 };
 

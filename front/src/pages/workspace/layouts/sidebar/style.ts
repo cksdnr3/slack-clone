@@ -1,67 +1,58 @@
 import styled from '@emotion/styled';
+import { NavLink } from 'react-router-dom';
 
-export const Channels = styled.nav`
-  display: inline-flex;
-  flex-direction: column;
-  background: #3f0e40;
-  width: 260px;
-  color: rgb(188, 171, 188);
-  vertical-align: top;
-  & a {
-    padding-left: 36px;
+export namespace SidebarStyle {
+  export const Channels = styled.nav`
+    display: inline-flex;
+    flex-direction: column;
+    background: #3f0e40;
+    width: 260px;
+    color: rgb(188, 171, 188);
+    vertical-align: top;
+  `;
+
+  export const WorkspaceButton = styled.button`
+    display: inline-block;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: rgb(${({ theme }) => theme.palette.white[700]});
+    border: 1px solid rgb(${({ theme }) => theme.main.backgroundColor});
+    margin: 0px;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgb(${({ theme }) => theme.palette.white[100]});
+    cursor: pointer;
+  `;
+
+  export const MenuScroll = styled.div`
+    height: calc(100vh - 102px);
+    overflow-y: auto;
+  `;
+
+  export const NavLinkWrapper = styled(NavLink)`
+    display: flex;
+    align-items: center;
+    padding: 0 26px;
     color: inherit;
     text-decoration: none;
     height: 28px;
     line-height: 28px;
-    display: flex;
-    align-items: center;
+
     &.selected {
       color: white;
     }
-  }
-  & .bold {
-    color: white;
-    font-weight: bold;
-  }
-  & .count {
-    margin-left: auto;
-    background: #cd2553;
-    border-radius: 16px;
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 700;
-    height: 18px;
-    line-height: 18px;
-    padding: 0 9px;
-    color: white;
-    margin-right: 16px;
-  }
-  & h2 {
+  `;
+
+  export const SidebarToggle = styled.div`
     height: 36px;
     line-height: 36px;
     margin: 0;
+    padding: 0 16px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     font-size: 15px;
-  }
-`;
-
-export const WorkspaceButton = styled.button`
-  display: inline-block;
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  background: rgb(${({ theme }) => theme.palette.white[700]});
-  border: 1px solid rgb(${({ theme }) => theme.main.backgroundColor});
-  margin: 0px;
-  font-size: 16px;
-  font-weight: 600;
-  color: white;
-  cursor: pointer;
-`;
-
-export const MenuScroll = styled.div`
-  height: calc(100vh - 102px);
-  overflow-y: auto;
-`;
+    cursor: pointer;
+  `;
+}

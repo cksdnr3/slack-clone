@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent, useCallback, useEffect } from 'react';
+import React, { FC, MouseEvent, useCallback } from 'react';
 import { useParams } from 'react-router';
 import useInput from '@hooks/useInput';
 import { useSWRConfig } from 'swr';
@@ -22,7 +22,7 @@ const InviteChannelForm: FC<InviteChannelFormProps> = ({ onCloseModal }) => {
   const onInviteWorkspace = useCallback(
     async (e: MouseEvent<HTMLFormElement>) => {
       e.preventDefault();
-      if (!email || !email.trim()) return;
+      if (!email || !email.trim() || !workspace || !channel) return;
       try {
         await workspaceAPI.post.inviteChannel({ string: { workspace, channel }, params: {} }, { email });
         await mutate(`/api/workspaces/${workspace}/channels/${channel}/members`);
@@ -33,12 +33,6 @@ const InviteChannelForm: FC<InviteChannelFormProps> = ({ onCloseModal }) => {
     },
     [email, workspace],
   );
-
-  useEffect(() => {
-    return () => {
-      setEmail('');
-    };
-  }, []);
 
   return (
     <Form

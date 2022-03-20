@@ -1,13 +1,13 @@
 import React, { useEffect, VFC } from 'react';
 import Loading from '@components/Loading';
 import fetcher from '@utils/fetcher';
-import { Redirect, useParams } from 'react-router';
 import useSWR from 'swr';
 import { IChannel, IUser } from '@typings/db';
 import useSocket from '@hooks/useSocket';
 import Contents from '@pages/workspace/layouts/contents';
 import Header from './layouts/header';
 import SideBar from './layouts/sidebar';
+import { Navigate, Route, useParams } from 'react-router-dom';
 
 interface WorkspaceProps {}
 
@@ -31,14 +31,6 @@ const Workspace: VFC<WorkspaceProps> = () => {
       disconnect();
     };
   }, [disconnect]);
-
-  if (isUsersValidating) {
-    return <Loading />;
-  }
-
-  if (!user) {
-    return <Redirect to="/login" />;
-  }
 
   return (
     <>

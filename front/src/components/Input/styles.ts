@@ -1,13 +1,12 @@
 import styled from '@emotion/styled';
 
 export namespace InputStyle {
-  export const Wrapper = styled.input`
+  export const Input = styled.input`
     border-radius: 4px;
     --saf-0: rgba(var(--sk_primary_foreground, 29, 28, 29), 0.3);
     border: 1px solid var(--saf-0);
     transition: border 80ms ease-out, box-shadow 80ms ease-out;
     box-sizing: border-box;
-    margin: 4px 0 20px;
     width: 100%;
     color: rgba(var(--sk_primary_foreground, 29, 28, 29), 1);
     background-color: rgba(var(--sk_primary_background, 255, 255, 255), 1);
@@ -25,11 +24,10 @@ export namespace InputStyle {
   `;
 
   export const Label = styled.label`
-    margin-bottom: 16px;
     & > span {
       display: block;
       text-align: left;
-      padding-bottom: 8px;
+      padding-bottom: 6px;
       font-size: 15px;
       cursor: pointer;
       line-height: 1.46666667;

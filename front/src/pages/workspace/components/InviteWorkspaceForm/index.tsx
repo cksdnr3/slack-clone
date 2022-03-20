@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent, useCallback, useEffect } from 'react';
+import React, { FC, MouseEvent, useCallback } from 'react';
 import { useParams } from 'react-router';
 import useInput from '@hooks/useInput';
 import Form from '@components/Form';
@@ -22,7 +22,7 @@ const InviteWorkspaceForm: FC<InviteWorkspaceFormProps> = ({ onCloseModal }) => 
   const onInviteWorkspace = useCallback(
     async (e: MouseEvent<HTMLFormElement>) => {
       e.preventDefault();
-      if (!email || !email.trim()) return;
+      if (!email || !email.trim() || !workspace) return;
       try {
         await workspaceAPI.post.inviteWorkspace({ string: { workspace }, params: {} }, { email });
         await mutate(`/api/workspaces/${workspace}/members`);

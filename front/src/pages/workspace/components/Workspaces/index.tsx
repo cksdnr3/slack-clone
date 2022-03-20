@@ -2,7 +2,7 @@ import CreateWorkspaceForm from '@pages/workspace/components/CreateWorkspaceForm
 import Modal from '@components/Modal';
 import useToggle from '@hooks/useToggle';
 import workspace from '@pages/workspace';
-import { WorkspaceButton } from '@pages/workspace/layouts/sidebar/style';
+import { SidebarStyle } from '@pages/workspace/layouts/sidebar/style';
 import { IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
 import React from 'react';
@@ -23,7 +23,7 @@ const Workspaces = () => {
           to={`/workspace/${ws.url}/channel/일반`}
           select={`${ws.url === workspace}`}
         >
-          <WorkspaceButton>{ws.name.slice(0, 1).toUpperCase()}</WorkspaceButton>
+          <SidebarStyle.WorkspaceButton>{ws.name.slice(0, 1).toUpperCase()}</SidebarStyle.WorkspaceButton>
         </WorkspacesStyle.LinkWrap>
       ))}
       <WorkspacesStyle.AddButton onClick={onToggleCreateWorkspaceModal}>+</WorkspacesStyle.AddButton>

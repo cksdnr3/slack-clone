@@ -1,17 +1,19 @@
 import Loading from '@components/Loading';
 import useInput from '@hooks/useInput';
-import { Form, Error, Label, LinkContainer, Button, Header } from '@pages/signup/styles';
 import { IUser } from '@typings/db';
 import fetcher from '@utils/fetcher';
-import React, { useCallback, useState, VFC } from 'react';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import React, { useCallback, VFC } from 'react';
+import { Link, Navigate, Route } from 'react-router-dom';
 import { userAPI } from '@apis/users/index';
 import useSWR from 'swr';
 import Input from '@components/Input';
+import Button from '@components/Button';
+import Form from '@components/Form';
+import { LoginStyle } from './styles';
 
 interface LoginProps {}
 
-const LogIn: VFC<LoginProps> = () => {
+const Login: VFC<LoginProps> = () => {
   const { data: user, error, isValidating, mutate } = useSWR<IUser>('/api/users', fetcher);
 
   const { value: email, setValue: setEmail, onChange: onChangeEmail } = useInput('');
@@ -32,44 +34,43 @@ const LogIn: VFC<LoginProps> = () => {
 
   return (
     <>
-      {isValidating ? (
-        <Loading />
-      ) : (
-        <>
-          {user && <Redirect to={`/workspace/${user?.Workspaces[0]?.url}/channel/일반`} />}
-          <div id="container">
-            <Header>Sleact</Header>
-            <Form onSubmit={onSubmit}>
-              <Label id="email-label">
-                <span>이메일 주소</span>
-                <div>
-                  <Input type="email" id="email" value={email} setValue={setEmail} onChange={onChangeEmail} />
-                </div>
-              </Label>
-              <Label id="password-label">
-                <span>비밀번호</span>
-                <div>
-                  <Input
-                    type="password"
-                    id="password"
-                    value={password}
-                    setValue={setPassword}
-                    onChange={onChangePassword}
-                  />
-                </div>
-                {error && <Error>이메일과 비밀번호 조합이 일치하지 않습니다.</Error>}
-              </Label>
-              <Button type="submit">로그인</Button>
-            </Form>
-            <LinkContainer>
-              아직 회원이 아니신가요?&nbsp;
-              <Link to="/signup">회원가입 하러가기</Link>
-            </LinkContainer>
-          </div>
-        </>
-      )}
+      {user && <Navigate replace to={`/workspace/${user?.Workspaces[0]?.url}/channel/일반`} />}
+      <LoginStyle.Wrapper>
+        <Form
+          onSubmit={onSubmit}
+          style={{ maxWidth: 400, margin: '0 auto', padding: 0 }}
+          header={<LoginStyle.Header>Sleact</LoginStyle.Header>}
+          body={[
+            <Input
+              key={0}
+              type="email"
+              value={email}
+              setValue={setEmail}
+              onChange={onChangeEmail}
+              label="이메일 주소"
+            />,
+            <Input
+              key={1}
+              type="password"
+              value={password}
+              setValue={setPassword}
+              onChange={onChangePassword}
+              label="비밀번호"
+            />,
+          ]}
+          footer={
+            <LoginStyle.Footer>
+              <Button type="submit" text="로그인" color="purple" size="large" />
+              <LoginStyle.LinkHighlighter>
+                아직 회원이 아니신가요?&nbsp;
+                <Link to="/signup">회원가입 하러가기</Link>
+              </LoginStyle.LinkHighlighter>
+            </LoginStyle.Footer>
+          }
+        />
+      </LoginStyle.Wrapper>
     </>
   );
 };
 
-export default LogIn;
+export default Login;

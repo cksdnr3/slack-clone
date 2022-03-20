@@ -4,10 +4,11 @@ import React, { FC, useCallback, useState } from 'react';
 import { useParams } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import useSWR from 'swr';
-import { CollapseButton, HoverWhite } from './stylest';
+import { CollapseButton, HoverWhite } from './styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import gravatar from 'gravatar';
+import { SidebarStyle } from '@pages/workspace/layouts/sidebar/style';
 
 interface ChannelListProps {
   user?: IUser;
@@ -31,60 +32,49 @@ const PrivateChannelList: FC<ChannelListProps> = ({ user }) => {
   }, []);
 
   return (
-    <>
-      <HoverWhite collapse={channelCollapse}>
-        <h2 style={{ cursor: 'pointer' }} onClick={onCollapseButton}>
-          <CollapseButton collapse={channelCollapse}>
-            <FontAwesomeIcon icon={faCaretDown} />
-          </CollapseButton>
-          <span>Direct Messages</span>
-        </h2>
-        {!channelCollapse ? (
-          members?.map((m) => {
-            const isOnline = onlineList.includes(m.id);
+    <HoverWhite collapse={channelCollapse}>
+      <SidebarStyle.SidebarToggle onClick={onCollapseButton}>
+        <CollapseButton collapse={channelCollapse}>
+          <FontAwesomeIcon icon={faCaretDown} />
+        </CollapseButton>
+        <span>Direct Messages</span>
+      </SidebarStyle.SidebarToggle>
+      {!channelCollapse ? (
+        members?.map((m) => {
+          const isOnline = onlineList.includes(m.id);
 
-            return (
-              <NavLink
-                key={m.id}
-                activeClassName="selected"
-                onClick={() => setCurrentDMember(m)}
-                to={`/workspace/${workspace}/dm/${m.id}`}
-                activeStyle={{
-                  background: 'rgb(0, 103, 163)',
-                }}
-              >
-                <img
-                  src={gravatar.url(m!.email, { s: '20px', d: 'mp' })}
-                  alt={m?.nickname}
-                  style={{ height: 20, width: 20, borderRadius: '5px', marginRight: 7 }}
-                />
-                <span>{m.nickname}</span>
-                {m.id === user?.id && <span> (나)</span>}
-              </NavLink>
-            );
-          })
-        ) : (
-          <NavLink
-            key={currentDmMember.id}
-            style={{ display: 'none' }}
-            activeClassName="selected"
-            to={`/workspace/${workspace}/dm/${currentDmMember.id}`}
-            activeStyle={{
-              display: 'flex',
-              background: 'rgb(0, 103, 163)',
-            }}
-          >
-            <img
-              src={gravatar.url(currentDmMember!.email, { s: '20px', d: 'mp' })}
-              alt={currentDmMember?.nickname}
-              style={{ height: 20, width: 20, borderRadius: '5px', marginRight: 7 }}
-            />
-            <span>{currentDmMember.nickname}</span>
-            {currentDmMember.id === user?.id && <span> (나)</span>}
-          </NavLink>
-        )}
-      </HoverWhite>
-    </>
+          return (
+            <SidebarStyle.NavLinkWrapper
+              key={m.id}
+              onClick={() => setCurrentDMember(m)}
+              to={`/workspace/${workspace}/dm/${m.id}`}
+            >
+              <img
+                src={gravatar.url(m!.email, { s: '20px', d: 'mp' })}
+                alt={m?.nickname}
+                style={{ height: 20, width: 20, borderRadius: '5px', marginRight: 7 }}
+              />
+              <span>{m.nickname}</span>
+              {m.id === user?.id && <span> (나)</span>}
+            </SidebarStyle.NavLinkWrapper>
+          );
+        })
+      ) : (
+        <SidebarStyle.NavLinkWrapper
+          key={currentDmMember.id}
+          style={{ display: 'none' }}
+          to={`/workspace/${workspace}/dm/${currentDmMember.id}`}
+        >
+          <img
+            src={gravatar.url(currentDmMember!.email, { s: '20px', d: 'mp' })}
+            alt={currentDmMember?.nickname}
+            style={{ height: 20, width: 20, borderRadius: '5px', marginRight: 7 }}
+          />
+          <span>{currentDmMember.nickname}</span>
+          {currentDmMember.id === user?.id && <span> (나)</span>}
+        </SidebarStyle.NavLinkWrapper>
+      )}
+    </HoverWhite>
   );
 };
 export default PrivateChannelList;
